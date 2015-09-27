@@ -5,18 +5,21 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace KillSomeMonsters.Environments
+namespace KillSomeMonsters.Locations
 {
-  abstract class Environment
+  public abstract class Location
   {
     public string name;
+    public string genericName;
 
-    public Environment north;
-    public Environment south;
-    public Environment east;
-    public Environment west;
+    public List<Enemy> enemies = new List<Enemy>();
 
-    public static Environment generateRandomEnvironment()
+    public Location north;
+    public Location south;
+    public Location east;
+    public Location west;
+
+    public static Location generateRandomLocation(int enemies)
     {
       Random rand = new Random();
       int number = rand.Next(0, 100);
@@ -29,12 +32,12 @@ namespace KillSomeMonsters.Environments
       else if (number > 15 && number <= 25)
       {
         number = rand.Next(0, EnvNames.namesForest.Count);
-        return new Forest(EnvNames.namesForest[number]);
+        return new Forest(EnvNames.namesForest[number], enemies);
       }
-      else if (number > 25 && number <= 50)
+      else
       {
         number = rand.Next(0, EnvNames.namesForest.Count);
-        return new Mountains();
+        return new Mountains(EnvNames.namesMountains[number], enemies);
       }
     }
   }

@@ -7,13 +7,21 @@ using System.Threading.Tasks;
 
 namespace KillSomeMonsters.StatEffects
 {
-  public abstract static class Effect
+  public abstract class Effect
   {
-    //This is a generic effect class for lists
-    //public int activate(Entity entity, int amount)
-    //{
-    //  //What does this do? Who knows.
-    //  return -2;
-    //}
+    public static Heal HEAL;
+    public static Damage DAMAGE;
+
+    static Effect()
+    {
+      HEAL = new Heal();
+      DAMAGE = new Damage();
+    }
+
+    public int activate(Entity target, int amount)
+    {
+      //dummy method
+      return -5;
+    }
   }
 }

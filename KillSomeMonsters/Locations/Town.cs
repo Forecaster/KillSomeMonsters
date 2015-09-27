@@ -4,23 +4,26 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace KillSomeMonsters.Environments
+namespace KillSomeMonsters.Locations
 {
-  class Town : Environment
+  public class Town : Location
   {
     public bool hasMerchant;
+    public int merchantGold;
     public bool hasInn;
     public bool hasSewers;
     public Sewers sewers;
 
-    public Town(string name) : this(name, false, false) { }
+    public Town(string name) : this(name, false, 0, false) { }
     
-    public Town(string name, bool hasMerchant) : this(name, hasMerchant, false) { }
+    public Town(string name, bool hasMerchant, int merchantGold) : this(name, hasMerchant, merchantGold, false) { }
 
-    public Town(string name, bool hasMerchant, bool hasInn)
+    public Town(string name, bool hasMerchant, int merchantGold, bool hasInn)
     {
       this.name = name;
+      this.genericName = "Town";
       this.hasMerchant = hasMerchant;
+      this.merchantGold = merchantGold;
       this.hasInn = hasInn;
 
       Random rand = new Random();
@@ -28,7 +31,7 @@ namespace KillSomeMonsters.Environments
 
       if (number >= 0 && number <= 25)
       {
-        this.sewers = new Sewers();
+        //this.sewers = new Sewers();
         this.hasSewers = true;
       }
       else

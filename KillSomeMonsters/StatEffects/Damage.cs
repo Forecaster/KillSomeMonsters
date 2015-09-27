@@ -10,9 +10,14 @@ namespace KillSomeMonsters.StatEffects
     /**
    * This effect applies damage to a target
    */
-  public static class Damage : Effect
+  public class Damage : Effect
   {
-    public static int activate(Entity target, int amount)
+    public Damage()
+    {
+      //constructor
+    }
+
+    new public int activate(Entity target, int amount)
     {
       if (target.health != 0)
       {

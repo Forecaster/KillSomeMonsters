@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace KillSomeMonsters.Equipment
 {
-  class EquNames
+  public class EquNames
   {
     public static List<string> namesBody = new List<string>();
     public static List<string> namesHead = new List<string>();
@@ -28,7 +28,10 @@ namespace KillSomeMonsters.Equipment
       namesHead.Add("Subtle Hat");
       namesHead.Add("Sleepy Racoon");
       namesHead.Add("Tinfoil Cap");
-      namesHead.Add("Piece of Paper");
+      namesHead.Add("Folded Paper Hat");
+      namesHead.Add("Pointy Helmet");
+      namesHead.Add("Horned Helmet");
+      namesHead.Add("Shoe");
 
       namesShield.Add("Tectonic Plate");
       namesShield.Add("Shield of Shielding");

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace KillSomeMonsters.Equipment
 {
-  class Potion
+  public class Potion
   {
     string name;
     string color;
@@ -17,6 +17,25 @@ namespace KillSomeMonsters.Equipment
     string bottle;
     Effect effect;
     int magnitude;
+
+    public Potion(string name, Effect effect, int magnitude)
+    {
+      this.name = name;
+      this.effect = effect;
+      this.magnitude = magnitude;
+      this.color = "color";
+      this.texture = "texture";
+      this.bottle = "bottle";
+    }
+
+    public Potion(string name, string color, string texture, string bottle, int magnitude)
+    {
+      this.name = name;
+      this.color = color;
+      this.texture = texture;
+      this.bottle = bottle;
+      this.magnitude = magnitude;
+    }
 
     public Potion(string name, string color, string texture, string bottle, Effect effect, int magnitude)
     {
@@ -28,9 +47,14 @@ namespace KillSomeMonsters.Equipment
       this.magnitude = magnitude;
     }
 
+    public string getEffect()
+    {
+      return effect.ToString();
+    }
+
     public int drinkPotion(Entity drinker)
     {
-      int result;
+      int result = 0;
       try
       {
         result = this.effect.activate(drinker, this.magnitude);
@@ -38,14 +62,14 @@ namespace KillSomeMonsters.Equipment
       }
       catch (FullHealthException e)
       {
-
+        return result;
       }
 
     }
 
-    public bool drinkPotion(Entity target)
+    public bool throwPotion(Entity target)
     {
-
+      return false;
     }
   }
 }

@@ -19,6 +19,9 @@ namespace KillSomeMonsters.Entities
       namesEnemies.Add("Ghost");
       namesEnemies.Add("Ghast");
       namesEnemies.Add("Swarm of Bees");
+      namesEnemies.Add("Shrubbery");
+      namesEnemies.Add("Pixie");
+      namesEnemies.Add("Firehydrant");
     }
   }
 }

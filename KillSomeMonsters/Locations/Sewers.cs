@@ -5,15 +5,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace KillSomeMonsters.Environments
+namespace KillSomeMonsters.Locations
 {
-  class Sewers : Environment
+  public class Sewers : Location
   {
-    public List<Enemy> enemies = new List<Enemy>();
-
     public Sewers(string name, int enemies)
     {
       this.name = name;
+
+      for (int i = 0; i < enemies; i++)
+      {
+        this.enemies.Add(new Enemy("Some enemy"));
+      }
     }
   }
 }

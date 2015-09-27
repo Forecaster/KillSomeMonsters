@@ -6,17 +6,18 @@ using System.Threading.Tasks;
 
 namespace KillSomeMonsters.Equipment
 {
-  class Weapon : Equipment
+  public class Weapon : Equipment
   {
-    int damage;
+    public int damage;
 
-    public Weapon(string name) : this(name, 2, 20) { }
+    public Weapon(string name) : this(name, 1, 1) { }
 
-    public Weapon(string name, int damage) : this(name, damage, 20) { }
+    public Weapon(string name, int value, int damage) : this(name, value, damage, 20) { }
 
-    public Weapon(string name, int damage, int maxHealth)
+    public Weapon(string name, int value, int damage, int maxHealth)
     {
       this.name = name;
+      this.value = value;
       this.damage = damage;
       this.maxHealth = maxHealth;
       this.health = maxHealth;

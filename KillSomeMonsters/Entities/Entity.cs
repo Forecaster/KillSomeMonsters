@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace KillSomeMonsters.Entities
 {
-  class Entity
+  public class Entity
   {
     //Name
     public string name;
@@ -16,11 +16,11 @@ namespace KillSomeMonsters.Entities
     public int level = 1;
 
     //Stats
-    public int health;
-    public int maxHealth;
-    public int strength;
-    public int speed;
-    public int dexterity;
+    public int health = 20;
+    public int maxHealth = 20;
+    public int strength = 1;
+    public int speed = 1;
+    public int dexterity = 1;
 
     //Equipment
     public List<Head> helmet = new List<Head>();

@@ -8,9 +8,14 @@ using System.Threading.Tasks;
 
 namespace KillSomeMonsters.StatEffects
 {
-  public static class Heal : Effect
+  public class Heal : Effect
   {
-    public static int activate(Entity target, int amount)
+    public Heal()
+    {
+      //constructor
+    }
+
+    new public int activate(Entity target, int amount)
     {
       if (target.health < target.maxHealth)
       {

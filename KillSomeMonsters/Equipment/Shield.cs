@@ -6,17 +6,16 @@ using System.Threading.Tasks;
 
 namespace KillSomeMonsters.Equipment
 {
-  class Shield : Armor
+  public class Shield : Armor
   {
-    int armorBonus;
+    public Shield(string name) : this(name, 0, 1) { }
 
-    public Shield(string name) : this(name, 2, 20) { }
+    public Shield(string name, int value, int armorBonus) : this(name, value, armorBonus, 20) { }
 
-    public Shield(string name, int armorBonus) : this(name, armorBonus, 20) { }
-
-    public Shield(string name, int armorBonus, int maxHealth)
+    public Shield(string name, int value, int armorBonus, int maxHealth)
     {
       this.name = name;
+      this.value = value;
       this.armorBonus = armorBonus;
       this.maxHealth = maxHealth;
       this.health = maxHealth;
