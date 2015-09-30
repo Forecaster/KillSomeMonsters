@@ -28,5 +28,11 @@ namespace KillSomeMonsters.Creatures
       this.currentplayerLocation = startHere;
       this.experience = 0;
     }
+
+    public void movePlayer(ref Location target)
+    {
+      target.generateSurroundings(Program.enemiesPerLocation);
+      this.currentplayerLocation = target;
+    }
   }
 }

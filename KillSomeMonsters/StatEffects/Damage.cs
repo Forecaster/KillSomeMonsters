@@ -17,7 +17,7 @@ namespace KillSomeMonsters.StatEffects
       //constructor
     }
 
-    new public int activate(Creature target, int amount)
+    public new int activate(Creature target, int amount)
     {
       if (target.health != 0)
       {

@@ -7,12 +7,14 @@ using System.Threading.Tasks;
 
 namespace KillSomeMonsters.Locations
 {
-  public class Forest : Location 
+  public class Forest : Location
   {
     public Forest(string name, int numberOfEnemies)
     {
       Random rand = new Random();
       this.name = name;
+      this.genericName = "forest";
+      this.genericPlural = "forests";
 
       for (int i = 0; i < numberOfEnemies; i++)
       {

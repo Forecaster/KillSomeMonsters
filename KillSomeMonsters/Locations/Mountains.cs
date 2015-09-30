@@ -13,6 +13,8 @@ namespace KillSomeMonsters.Locations
     {
       Random rand = new Random();
       this.name = name;
+      this.genericName = "mountain";
+      this.genericPlural = "mountains";
 
       for (int i = 0; i < numberOfEnemies; i++)
       {

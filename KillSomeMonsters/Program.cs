@@ -17,6 +17,8 @@ namespace KillSomeMonsters
     public static bool gameInProgress = false;
     public static string gameName = "Kill Some Monsters or something";
     public static string authorName = "Forecaster";
+    public static int enemiesPerLocation = 3;
+
     static void Main(string[] args)
     {
       //Player testPlayer = new Player("PlayerName", 20, 10);

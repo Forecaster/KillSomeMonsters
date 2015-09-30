@@ -21,7 +21,8 @@ namespace KillSomeMonsters.Locations
     public Town(string name, bool hasMerchant, int merchantGold, bool hasInn)
     {
       this.name = name;
-      this.genericName = "Town";
+      this.genericName = "town";
+      this.genericPlural = "towns";
       this.hasMerchant = hasMerchant;
       this.merchantGold = merchantGold;
       this.hasInn = hasInn;

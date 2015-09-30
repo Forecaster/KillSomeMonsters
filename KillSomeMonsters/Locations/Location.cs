@@ -11,6 +11,7 @@ namespace KillSomeMonsters.Locations
   {
     public string name;
     public string genericName;
+    public string genericPlural;
 
     public List<Enemy> enemies = new List<Enemy>();
 
@@ -39,6 +40,14 @@ namespace KillSomeMonsters.Locations
         number = rand.Next(0, EnvNames.namesForest.Count);
         return new Mountains(EnvNames.namesMountains[number], enemies);
       }
+    }
+
+    public void generateSurroundings(int enemies)
+    {
+      this.north = generateRandomLocation(enemies);
+      this.south = generateRandomLocation(enemies);
+      this.east = generateRandomLocation(enemies);
+      this.west = generateRandomLocation(enemies);
     }
   }
 }

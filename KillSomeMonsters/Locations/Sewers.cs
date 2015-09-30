@@ -12,6 +12,8 @@ namespace KillSomeMonsters.Locations
     public Sewers(string name, int enemies)
     {
       this.name = name;
+      this.genericName = "sewer";
+      this.genericPlural = "sewers";
 
       for (int i = 0; i < enemies; i++)
       {

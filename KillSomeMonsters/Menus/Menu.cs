@@ -18,7 +18,7 @@ namespace KillSomeMonsters.Menus
       //static constructor for reasons
     }
 
-    public static void drawPlayerStatus()
+    public static void drawPlayerStatus(Player player)
     {
       int maxWidth = Console.BufferWidth - 1;
 
@@ -29,7 +29,7 @@ namespace KillSomeMonsters.Menus
         divider += "#";
       }
       Console.WriteLine(divider);
-      Console.WriteLine("# " + Program.currentGame.player.name + ": " + Program.currentGame.player.health + " / " + Program.currentGame.player.maxHealth + " # Gold: " + Program.currentGame.player.gold + " #");
+      Console.WriteLine("# " + player.name + ": " + player.health + " / " + player.maxHealth + " # Gold: " + player.gold + " #");
       Console.WriteLine(divider);
     }
 
@@ -257,12 +257,56 @@ namespace KillSomeMonsters.Menus
       Program.currentGame.startingTown = new Town("Startville", true, 100, true);
       Program.currentGame.player = new Player(characterName, ref Program.currentGame.startingTown, fortitude, strength, speed, dexterity);
       Program.gameInProgress = true;
-      gameMenu();
+      gameMenu(Program.currentGame);
     }
 
-    static void gameMenu()
+    static void gameMenu(Game game)
     {
+      bool exitThisMenu = false;
+      while(!exitThisMenu)
+      {
+        List<string> options = new List<string>();
 
+        options.Add("Look North");
+        options.Add("Go North");
+        options.Add("Look West");
+        options.Add("Go West");
+        options.Add("Look East");
+        options.Add("Go East");
+        options.Add("Look South");
+        options.Add("Go South");
+
+        drawPlayerStatus(game.player);
+
+
+        Console.WriteLine("\nYou are currently in a " + game.player.currentplayerLocation.genericName + " by the name of " + game.player.currentplayerLocation.name);
+        if (game.player.currentplayerLocation.genericName == "town")
+        {
+          Console.WriteLine("You see a few people moving about the town square.");
+          //Console.WriteLine(game.player.currentplayerLocation.ToString());
+          //if (game.player.currentplayerLocation.hasMerchant == true) //why does this reference the Location object and not the Town object?!
+          //  Console.WriteLine("You see a weapon merchant");
+          //if (game.player.currentplayerLocation.hasInn == true) //same with this!
+          //  Console.WriteLine("You see an inn");
+        }
+        else if (game.player.currentplayerLocation.genericName == "forest")
+        {
+          Console.WriteLine("A dim forest surrounds you and you hear birds chirping in the treetops");
+          Console.WriteLine("According to the last town you visited this forest is called " + game.player.currentplayerLocation.name);
+        }
+        else if (game.player.currentplayerLocation.genericName == "mountain")
+        {
+          Console.WriteLine("A mountain by the name of " + game.player.currentplayerLocation.name + " blocks your path.");
+          Console.WriteLine("You can see a winding path vanish into the distance");
+        }
+        else if (game.player.currentplayerLocation.genericName == "sewer")
+        {
+          Console.WriteLine("As you enter the damp drainage tunnels under the town you ask yourself what you could possibly find down here...");
+        }
+
+        Console.ReadKey();
+        exitThisMenu = true;
+      }
     }
   }
 }
