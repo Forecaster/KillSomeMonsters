@@ -21,17 +21,18 @@ namespace KillSomeMonsters
 
     static void Main(string[] args)
     {
-      //Player testPlayer = new Player("PlayerName", 20, 10);
-      //Potion potion = new Potion("Potion of Testing", Effect.HEAL, 1);
-      //Console.WriteLine(potion.getEffect());
+      Town town = new Town("testVille");
+      Player testPlayer = new Player("PlayerName", ref town);
+      Potion potion = new Potion("Potion of Testing", Effect.HEAL, 1);
+      Console.WriteLine(potion.getEffect());
 
-      //Console.WriteLine(testPlayer.health + "/" + player.maxHealth);
-      //int result = potion.drinkPotion(testPlayer);
-      //Console.WriteLine(testPlayer.health + "/" + player.maxHealth);
-      //Console.WriteLine(result.ToString());
-      //Console.ReadKey();
+      Console.WriteLine(testPlayer.health + "/" + testPlayer.maxHealth);
+      int result = potion.drinkPotion(testPlayer);
+      Console.WriteLine(testPlayer.health + "/" + testPlayer.maxHealth);
+      Console.WriteLine(result.ToString());
+      Console.ReadKey();
 
-      Menu.mainMenu();
+      //Menu.mainMenu();
 
       Console.WriteLine("Reached end of program");
       Console.ReadKey();
