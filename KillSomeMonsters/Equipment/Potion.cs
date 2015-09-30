@@ -1,4 +1,4 @@
-﻿using KillSomeMonsters.Entities;
+﻿using KillSomeMonsters.Creatures;
 using KillSomeMonsters.Exceptions;
 using KillSomeMonsters.StatEffects;
 using System;
@@ -52,7 +52,7 @@ namespace KillSomeMonsters.Equipment
       return effect.ToString();
     }
 
-    public int drinkPotion(Entity drinker)
+    public int drinkPotion(Creature drinker)
     {
       int result = 0;
       try
@@ -67,7 +67,7 @@ namespace KillSomeMonsters.Equipment
 
     }
 
-    public bool throwPotion(Entity target)
+    public bool throwPotion(Creature target)
     {
       return false;
     }

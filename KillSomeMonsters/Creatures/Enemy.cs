@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace KillSomeMonsters.Entities
+namespace KillSomeMonsters.Creatures
 {
-  public class Enemy : Entity
+  public class Enemy : Creature
   {
     public Enemy(string name) : this(name, 20) { }
 

@@ -16,6 +16,7 @@ namespace KillSomeMonsters.Equipment
     {
       this.name = name;
       this.value = value;
+      this.valueLoss = 0.0;
       this.armorBonus = armorBonus;
       this.maxHealth = maxHealth;
       this.health = maxHealth;

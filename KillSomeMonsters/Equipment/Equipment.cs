@@ -10,6 +10,7 @@ namespace KillSomeMonsters.Equipment
   {
     public string name;
     public int value;
+    public double valueLoss;
     public int maxHealth;
     public int health;
     public bool shattered;

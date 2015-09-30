@@ -1,4 +1,4 @@
-﻿using KillSomeMonsters.Entities;
+﻿using KillSomeMonsters.Creatures;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,7 +18,7 @@ namespace KillSomeMonsters.StatEffects
       DAMAGE = new Damage();
     }
 
-    public int activate(Entity target, int amount)
+    public int activate(Creature target, int amount)
     {
       //dummy method
       return -5;

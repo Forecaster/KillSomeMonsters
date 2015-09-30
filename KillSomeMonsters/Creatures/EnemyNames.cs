@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace KillSomeMonsters.Entities
+namespace KillSomeMonsters.Creatures
 {
   public static class EnemyNames
   {

@@ -1,4 +1,4 @@
-﻿using KillSomeMonsters.Entities;
+﻿using KillSomeMonsters.Creatures;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,7 +17,7 @@ namespace KillSomeMonsters.StatEffects
       //constructor
     }
 
-    new public int activate(Entity target, int amount)
+    new public int activate(Creature target, int amount)
     {
       if (target.health != 0)
       {
