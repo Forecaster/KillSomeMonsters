@@ -8,15 +8,14 @@ namespace KillSomeMonsters.Creatures
 {
   public class Enemy : Creature
   {
-    public Enemy(string name) : this(name, 20) { }
+    public Enemy(string name) : this(name, 1, 1, 1, 1) { }
 
-    public Enemy(string name, int maxHealth) : this(name, maxHealth, 1, 1, 1) { }
-
-    public Enemy(string name, int maxHealth, int strength, int speed, int dexterity)
+    public Enemy(string name, int fortitude, int strength, int speed, int dexterity)
     {
       this.name = name;
-      this.maxHealth = maxHealth;
-      this.health = maxHealth;
+      this.maxHealth = Math.Max((fortitude * 5), 5);
+      this.health = this.maxHealth;
+      this.fortitude = fortitude;
       this.strength = strength;
       this.speed = speed;
       this.dexterity = dexterity;

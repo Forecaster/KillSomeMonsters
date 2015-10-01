@@ -46,11 +46,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Creatures\EnemyNames.cs" />
+    <Compile Include="Locations\Direction.cs" />
     <Compile Include="Locations\Location.cs" />
     <Compile Include="Locations\EnvNames.cs" />
     <Compile Include="Locations\Forest.cs" />
     <Compile Include="Locations\Mountains.cs" />
-    <Compile Include="Locations\Sewers.cs" />
+    <Compile Include="Locations\Sewer.cs" />
     <Compile Include="Locations\Town.cs" />
     <Compile Include="Equipment\Armor.cs" />
     <Compile Include="Equipment\Equipment.cs" />
@@ -65,6 +66,7 @@
     <Compile Include="Creatures\Player.cs" />
     <Compile Include="Exceptions\FullHealthException.cs" />
     <Compile Include="Game.cs" />
+    <Compile Include="Locations\WorldMap.cs" />
     <Compile Include="Menus\Menu.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

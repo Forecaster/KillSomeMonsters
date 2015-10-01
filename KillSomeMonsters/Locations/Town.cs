@@ -11,14 +11,16 @@ namespace KillSomeMonsters.Locations
     public bool hasMerchant;
     public int merchantGold;
     public bool hasInn;
-    public bool hasSewers;
-    public Sewers sewers;
+    public bool hasSewer;
+    public Sewer sewer;
 
-    public Town(string name) : this(name, false, 0, false) { }
+    public Town(string name) : this(name, false, 0, false, false) { }
     
-    public Town(string name, bool hasMerchant, int merchantGold) : this(name, hasMerchant, merchantGold, false) { }
+    public Town(string name, bool hasMerchant, int merchantGold) : this(name, hasMerchant, merchantGold, false, false) { }
 
-    public Town(string name, bool hasMerchant, int merchantGold, bool hasInn)
+    public Town(string name, bool hasMerchant, int merchantGold, bool hasInn) : this(name, hasMerchant, merchantGold, hasInn, false) { }
+
+    public Town(string name, bool hasMerchant, int merchantGold, bool hasInn, bool visited)
     {
       this.name = name;
       this.genericName = "town";
@@ -27,16 +29,18 @@ namespace KillSomeMonsters.Locations
       this.merchantGold = merchantGold;
       this.hasInn = hasInn;
 
+      this.visited = visited;
+
       Random rand = new Random();
       int number = rand.Next(0, 100);
 
       if (number >= 0 && number <= 25)
       {
-        //this.sewers = new Sewers();
-        this.hasSewers = true;
+        this.sewer = new Sewer(4);
+        this.hasSewer = true;
       }
       else
-        this.hasSewers = false;
+        this.hasSewer = false;
     }
   }
 }

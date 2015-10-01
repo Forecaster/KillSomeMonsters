@@ -11,16 +11,11 @@ namespace KillSomeMonsters
   public class Game
   {
     public Player player;
-    public Town startingTown;
-
-    public Game()
-    {
-
-    }
-
+    public WorldMap worldMap;
+    
     public Game(Player player)
     {
-      this.startingTown = new Town("Startville", true, 100, true);
+      this.worldMap = new WorldMap();
       this.player = player;
     }
   }

@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace KillSomeMonsters.Locations
 {
-  public class Sewers : Location
+  public class Sewer : Location
   {
-    public Sewers(string name, int enemies)
+    public Sewer(int enemies)
     {
-      this.name = name;
+      this.name = "";
       this.genericName = "sewer";
       this.genericPlural = "sewers";
 

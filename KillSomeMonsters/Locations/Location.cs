@@ -12,6 +12,7 @@ namespace KillSomeMonsters.Locations
     public string name;
     public string genericName;
     public string genericPlural;
+    public bool visited;
 
     public List<Enemy> enemies = new List<Enemy>();
 
@@ -25,29 +26,40 @@ namespace KillSomeMonsters.Locations
       Random rand = new Random();
       int number = rand.Next(0, 100);
 
-      if (number >= 0 && number <= 15)
+      if (0 <= number && number <= 25)
       {
-        number = rand.Next(0, EnvNames.namesTown.Count);
+        number = rand.Next(0, EnvNames.namesTown.Count - 1);
+        //Console.WriteLine("Generated Town");
+        //Console.ReadKey();
         return new Town(EnvNames.namesTown[number]);
       }
-      else if (number > 15 && number <= 25)
+      else if (25 < number && number <= 60)
       {
-        number = rand.Next(0, EnvNames.namesForest.Count);
+        number = rand.Next(0, EnvNames.namesForest.Count - 1);
+        //Console.WriteLine("Generated Forest");
+        //Console.ReadKey();
         return new Forest(EnvNames.namesForest[number], enemies);
       }
       else
       {
-        number = rand.Next(0, EnvNames.namesForest.Count);
+        number = rand.Next(0, EnvNames.namesMountains.Count - 1);
+        //Console.WriteLine("Generated Mountains");
+        //Console.ReadKey();
         return new Mountains(EnvNames.namesMountains[number], enemies);
       }
     }
 
-    public void generateSurroundings(int enemies)
+    public string inspectLocation()
     {
-      this.north = generateRandomLocation(enemies);
-      this.south = generateRandomLocation(enemies);
-      this.east = generateRandomLocation(enemies);
-      this.west = generateRandomLocation(enemies);
+      string visited = "an unfamiliar";
+      if (this.visited)
+        visited = "a familiar";
+
+      string enemies = "hostile";
+      if (this.enemies.Count == 0)
+        enemies = "peaceful";
+        
+      return "You see the outline of " + visited + " " + this.genericName + " in the distance.\nYou get a " + enemies + " vibe from it.";
     }
   }
 }

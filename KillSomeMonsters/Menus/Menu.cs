@@ -33,6 +33,10 @@ namespace KillSomeMonsters.Menus
       Console.WriteLine(divider);
     }
 
+
+    /*
+     * This is the menu used to continue an existing game, start a new one or quit the game, as well as potentially quit the game.
+     */
     public static void mainMenu()
     {
       bool goForth = false;
@@ -112,6 +116,9 @@ namespace KillSomeMonsters.Menus
         Console.WriteLine("Quit"); //this shouldn't really do anything, just let the program terminate
     }
 
+    /*
+     * This method provides the menu used to create a new character and a new game.
+     */
     public static void newGame()
     {
       int fortitude = 0;
@@ -253,59 +260,176 @@ namespace KillSomeMonsters.Menus
         }
       }
 
-      Program.currentGame = new Game();
-      Program.currentGame.startingTown = new Town("Startville", true, 100, true);
-      Program.currentGame.player = new Player(characterName, ref Program.currentGame.startingTown, fortitude, strength, speed, dexterity);
+      Program.currentGame = new Game(new Player(characterName, fortitude, strength, speed, dexterity));
       Program.gameInProgress = true;
-      gameMenu(Program.currentGame);
+      gameMenu(ref Program.currentGame);
     }
 
-    static void gameMenu(Game game)
+    /*
+     * This method represents the menu used to move around the world
+     */
+    static void gameMenu(ref Game game)
     {
+      int currentSelection = 0;
       bool exitThisMenu = false;
-      while(!exitThisMenu)
+
+      while (!exitThisMenu)
       {
+        int playerX = game.player.x;
+        int playerY = game.player.y;
+        string locationGenericName = game.worldMap.locations[playerX, playerY].genericName;
+        string locationName = game.worldMap.locations[playerX, playerY].name;
+        Console.Clear();
         List<string> options = new List<string>();
-
-        options.Add("Look North");
-        options.Add("Go North");
-        options.Add("Look West");
-        options.Add("Go West");
-        options.Add("Look East");
-        options.Add("Go East");
-        options.Add("Look South");
-        options.Add("Go South");
-
         drawPlayerStatus(game.player);
-
-
-        Console.WriteLine("\nYou are currently in a " + game.player.currentplayerLocation.genericName + " by the name of " + game.player.currentplayerLocation.name);
-        if (game.player.currentplayerLocation.genericName == "town")
+        
+        if (locationGenericName == "town")
         {
-          Console.WriteLine("You see a few people moving about the town square.");
-                    Console.WriteLine(game.player.currentplayerLocation.ToString());
-                    if (((Town)game.player.currentplayerLocation).hasMerchant == true) //why does this reference the Location object and not the Town object?!
-                        Console.WriteLine("You see a weapon merchant");
-                    if (((Town)game.player.currentplayerLocation).hasInn == true) //same with this!
-                        Console.WriteLine("You see an inn");
-                }
-        else if (game.player.currentplayerLocation.genericName == "forest")
+          Console.WriteLine("You find yourself in the town sqare of " + locationName + ".");
+          Console.WriteLine("A few people are moving about the town square.");
+          if (((Town)game.worldMap.locations[playerX, playerY]).hasMerchant == true)
+          {
+            Console.WriteLine("You see a weapon merchant");
+            options.Add("Visit Merchant");
+          }
+          if (((Town)game.worldMap.locations[playerX, playerY]).hasInn == true)
+          {
+            Console.WriteLine("You see an inn");
+            options.Add("Visit Inn");
+          }
+          if (((Town)game.worldMap.locations[playerX, playerY]).hasSewer == true)
+          {
+            Console.WriteLine("You see an entrance to the town sewer tunnels");
+            options.Add("Enter Sewers");
+          }
+        }
+        else if (locationGenericName == "forest")
         {
           Console.WriteLine("A dim forest surrounds you and you hear birds chirping in the treetops");
-          Console.WriteLine("According to the last town you visited this forest is called " + game.player.currentplayerLocation.name);
+          Console.WriteLine("According to the last town you visited this forest is called " + locationName);
         }
-        else if (game.player.currentplayerLocation.genericName == "mountain")
+        else if (locationGenericName == "mountain")
         {
-          Console.WriteLine("A mountain by the name of " + game.player.currentplayerLocation.name + " blocks your path.");
+          Console.WriteLine("A mountain by the name of " + locationName + " blocks your path.");
           Console.WriteLine("You can see a winding path vanish into the distance");
         }
-        else if (game.player.currentplayerLocation.genericName == "sewer")
+        else if (locationGenericName == "sewer")
         {
           Console.WriteLine("As you enter the damp drainage tunnels under the town you ask yourself what you could possibly find down here...");
         }
 
-        Console.ReadKey();
-        exitThisMenu = true;
+        Console.Write("\n\n");
+
+        options.Add("Look North");
+        options.Add("Look West");
+        options.Add("Look East");
+        options.Add("Look South");
+        options.Add("Go North");
+        options.Add("Go West");
+        options.Add("Go East");
+        options.Add("Go South");
+
+        for (int i = 0; i < options.Count; i++)
+        {
+          string prefix = "   ";
+          if (i == currentSelection)
+            prefix = " > ";
+
+          Console.WriteLine(prefix + options[i]);
+        }
+
+        ConsoleKeyInfo playerKey = Console.ReadKey();
+        Console.WriteLine();
+
+        if (playerKey.Key.ToString() == "Enter")
+        {
+          if (options[currentSelection] == "Visit Merchant")
+          { }
+          else if (options[currentSelection] == "Visit Inn")
+          { }
+          else if (options[currentSelection] == "Enter Sewers")
+          { }
+          else if (options[currentSelection] == "Look North")
+          {
+            if (game.worldMap.locations[game.player.x, game.player.y + 1] != null)
+              Console.WriteLine(game.worldMap.locations[game.player.x, game.player.y +1].inspectLocation());
+            else
+            {
+              game.worldMap.locations[game.player.x, game.player.y + 1] = Location.generateRandomLocation(Program.enemiesPerLocation);
+              Console.WriteLine(game.worldMap.locations[game.player.x, game.player.y + 1].inspectLocation());
+            }
+            Console.ReadKey();
+          }
+          else if (options[currentSelection] == "Look West")
+          {
+            if (game.worldMap.locations[game.player.x - 1, game.player.y] != null)
+              Console.WriteLine(game.worldMap.locations[game.player.x - 1, game.player.y].inspectLocation());
+            else
+            {
+              game.worldMap.locations[game.player.x - 1, game.player.y] = Location.generateRandomLocation(Program.enemiesPerLocation);
+              Console.WriteLine(game.worldMap.locations[game.player.x - 1, game.player.y].inspectLocation());
+            }
+            Console.ReadKey();
+          }
+          else if (options[currentSelection] == "Look East")
+          {
+            if (game.worldMap.locations[game.player.x + 2, game.player.y] != null)
+              Console.WriteLine(game.worldMap.locations[game.player.x + 2, game.player.y].inspectLocation());
+            else
+            {
+              game.worldMap.locations[game.player.x + 2, game.player.y] = Location.generateRandomLocation(Program.enemiesPerLocation);
+              Console.WriteLine(game.worldMap.locations[game.player.x + 2, game.player.y].inspectLocation());
+            }
+            Console.ReadKey();
+          }
+          else if (options[currentSelection] == "Look South")
+          {
+            if (game.worldMap.locations[game.player.x, game.player.y - 1] != null)
+              Console.WriteLine(game.worldMap.locations[game.player.x, game.player.y - 1].inspectLocation());
+            else
+            {
+              game.worldMap.locations[game.player.x, game.player.y - 1] = Location.generateRandomLocation(Program.enemiesPerLocation);
+              Console.WriteLine(game.worldMap.locations[game.player.x, game.player.y - 1].inspectLocation());
+            }
+            Console.ReadKey();
+          }
+          else if (options[currentSelection] == "Go North")
+          {
+            game.player.movePlayer(Direction.NORTH);
+            Console.WriteLine("You wander north until your surroundings turn into those of a " + game.worldMap.locations[game.player.x, game.player.y].genericName);
+            Console.ReadKey();
+          }
+          else if (options[currentSelection] == "Go West")
+          {
+            game.player.movePlayer(Direction.WEST);
+            Console.WriteLine("You wander west until your surroundings turn into those of a " + game.worldMap.locations[game.player.x, game.player.y].genericName);
+            Console.ReadKey();
+          }
+          else if (options[currentSelection] == "Go East")
+          {
+            game.player.movePlayer(Direction.EAST);
+            Console.WriteLine("You wander east until your surroundings turn into those of a " + game.worldMap.locations[game.player.x, game.player.y].genericName);
+            Console.ReadKey();
+          }
+          else if (options[currentSelection] == "Go South")
+          {
+            game.player.movePlayer(Direction.SOUTH);
+            Console.WriteLine("You wander south until your surroundings turn into those of a " + game.worldMap.locations[game.player.x, game.player.y].genericName);
+            Console.ReadKey();
+          }
+        }
+        else if (playerKey.Key.ToString() == "UpArrow")
+        {
+          currentSelection--;
+          if (currentSelection < 0)
+            currentSelection = options.Count;
+        }
+        else if (playerKey.Key.ToString() == "DownArrow")
+        {
+          currentSelection++;
+          if (currentSelection >= options.Count)
+            currentSelection = 0;
+        }
       }
     }
   }

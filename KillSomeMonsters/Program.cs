@@ -19,20 +19,23 @@ namespace KillSomeMonsters
     public static string authorName = "Forecaster";
     public static int enemiesPerLocation = 3;
 
+    public static int worldSizeX = 15;
+    public static int worldSizeY = 15;
+
     static void Main(string[] args)
     {
-      Town town = new Town("testVille");
-      Player testPlayer = new Player("PlayerName", ref town);
-      Potion potion = new Potion("Potion of Testing", Effect.HEAL, 1);
-      Console.WriteLine(potion.getEffect());
+      //Town town = new Town("testVille");
+      //Player testPlayer = new Player("PlayerName", ref town);
+      //Potion potion = new Potion("Potion of Testing", Effect.HEAL, 1);
+      //Console.WriteLine(potion.getEffect());
 
-      Console.WriteLine(testPlayer.health + "/" + testPlayer.maxHealth);
-      int result = potion.drinkPotion(testPlayer);
-      Console.WriteLine(testPlayer.health + "/" + testPlayer.maxHealth);
-      Console.WriteLine(result.ToString());
-      Console.ReadKey();
+      //Console.WriteLine(testPlayer.health + "/" + testPlayer.maxHealth);
+      //int result = potion.drinkPotion(testPlayer);
+      //Console.WriteLine(testPlayer.health + "/" + testPlayer.maxHealth);
+      //Console.WriteLine(result.ToString());
+      //Console.ReadKey();
 
-      //Menu.mainMenu();
+      Menu.mainMenu();
 
       Console.WriteLine("Reached end of program");
       Console.ReadKey();

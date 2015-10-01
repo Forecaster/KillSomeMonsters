@@ -20,7 +20,7 @@ namespace KillSomeMonsters.StatEffects
 
     public virtual int activate(Creature target, int amount)
     {
-      //dummy method
+      //dummy method that should never be called
       return -5;
     }
   }
