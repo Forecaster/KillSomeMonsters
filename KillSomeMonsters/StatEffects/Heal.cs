@@ -15,7 +15,7 @@ namespace KillSomeMonsters.StatEffects
       //constructor
     }
 
-    public new int activate(Creature target, int amount)
+    public override int activate(Creature target, int amount)
     {
       if (target.health < target.maxHealth)
       {

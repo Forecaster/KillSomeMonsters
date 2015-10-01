@@ -18,7 +18,7 @@ namespace KillSomeMonsters.StatEffects
       DAMAGE = new Damage();
     }
 
-    public int activate(Creature target, int amount)
+    public virtual int activate(Creature target, int amount)
     {
       //dummy method
       return -5;

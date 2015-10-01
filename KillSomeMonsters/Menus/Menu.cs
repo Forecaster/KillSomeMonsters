@@ -283,12 +283,12 @@ namespace KillSomeMonsters.Menus
         if (game.player.currentplayerLocation.genericName == "town")
         {
           Console.WriteLine("You see a few people moving about the town square.");
-          //Console.WriteLine(game.player.currentplayerLocation.ToString());
-          //if (game.player.currentplayerLocation.hasMerchant == true) //why does this reference the Location object and not the Town object?!
-          //  Console.WriteLine("You see a weapon merchant");
-          //if (game.player.currentplayerLocation.hasInn == true) //same with this!
-          //  Console.WriteLine("You see an inn");
-        }
+                    Console.WriteLine(game.player.currentplayerLocation.ToString());
+                    if (((Town)game.player.currentplayerLocation).hasMerchant == true) //why does this reference the Location object and not the Town object?!
+                        Console.WriteLine("You see a weapon merchant");
+                    if (((Town)game.player.currentplayerLocation).hasInn == true) //same with this!
+                        Console.WriteLine("You see an inn");
+                }
         else if (game.player.currentplayerLocation.genericName == "forest")
         {
           Console.WriteLine("A dim forest surrounds you and you hear birds chirping in the treetops");

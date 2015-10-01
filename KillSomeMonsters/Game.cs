@@ -1,6 +1,5 @@
 ﻿using KillSomeMonsters.Creatures;
 using KillSomeMonsters.Locations;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,11 +22,6 @@ namespace KillSomeMonsters
     {
       this.startingTown = new Town("Startville", true, 100, true);
       this.player = player;
-    }
-
-    public string serializeGame()
-    {
-      return JsonConvert.SerializeObject(this);
     }
   }
 }
