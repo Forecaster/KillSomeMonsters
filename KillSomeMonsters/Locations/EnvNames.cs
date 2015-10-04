@@ -15,7 +15,7 @@ namespace KillSomeMonsters.Locations
 
     static EnvNames()
     {
-      namesForest.Add("The Dark Woods");
+      namesForest.Add("Dark Woods");
       namesForest.Add("Mystical Forest");
       namesForest.Add("Ancient Glade");
       namesForest.Add("Forest of Winds");

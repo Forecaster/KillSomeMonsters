@@ -15,9 +15,52 @@ namespace KillSomeMonsters.Menus
 
     static Menu()
     {
-      //static constructor for reasons
+      //static constructor for reasons, probably not necessary
     }
 
+    /*
+     * This is useless right now, it can't replace the existing menus because it replaces the status bar and area description, needs more work to be usable
+     */
+    public static int navigationMenu(List<string> options)
+    {
+      bool exitMenu = false;
+      int currentSelection = 0;
+      while (!exitMenu)
+      {
+        for (int i = 0; i < options.Count; i++)
+        {
+          string prefix = "   ";
+          if (i == currentSelection)
+            prefix = " > ";
+
+          Console.WriteLine(prefix + options[i]);
+        }
+
+        ConsoleKeyInfo userKey = Console.ReadKey();
+
+        if (userKey.Key.ToString() == "Enter")
+          exitMenu = true;
+        else if (userKey.Key.ToString() == "UpArrow")
+        {
+          if (currentSelection == 0)
+            currentSelection = options.Count - 1;
+          else
+            currentSelection--;
+        }
+        else if (userKey.Key.ToString() == "DownArrow")
+        {
+          if (currentSelection == options.Count - 1)
+            currentSelection = 0;
+          else
+            currentSelection++;
+        }
+      }
+      return currentSelection;
+    }
+
+    /*
+     * This draws the player name, health and gold at the top of the screen
+     */
     public static void drawPlayerStatus(Player player)
     {
       int maxWidth = Console.BufferWidth - 1;
@@ -29,10 +72,10 @@ namespace KillSomeMonsters.Menus
         divider += "#";
       }
       Console.WriteLine(divider);
-      Console.WriteLine("# " + player.name + ": " + player.health + " / " + player.maxHealth + " # Gold: " + player.gold + " #");
+      Console.WriteLine("# " + player.name + ": " + player.health + " / " + player.maxHealth + " # Gold: " + player.gold);
+      //Console.WriteLine("# x" + player.x + " y" + player.y);
       Console.WriteLine(divider);
     }
-
 
     /*
      * This is the menu used to continue an existing game, start a new one or quit the game, as well as potentially quit the game.
@@ -256,6 +299,9 @@ namespace KillSomeMonsters.Menus
           Console.Write("Name: ");
           characterName = Console.ReadLine();
 
+          if (characterName.Length == 0)
+            characterName = playerNames.getRandomPlayerName();
+
           doneCreatingGame = true;
         }
       }
@@ -272,21 +318,22 @@ namespace KillSomeMonsters.Menus
     {
       int currentSelection = 0;
       bool exitThisMenu = false;
+      bool addNavOptions = true;
 
       while (!exitThisMenu)
       {
         int playerX = game.player.x;
         int playerY = game.player.y;
-        string locationGenericName = game.worldMap.locations[playerX, playerY].genericName;
-        string locationName = game.worldMap.locations[playerX, playerY].name;
+        Location location = game.worldMap.locations[playerX, playerY];
+        string locationGenericName = location.genericName;
+        string locationName = location.name;
         Console.Clear();
         List<string> options = new List<string>();
         drawPlayerStatus(game.player);
         
         if (locationGenericName == "town")
         {
-          Console.WriteLine("You find yourself in the town sqare of " + locationName + ".");
-          Console.WriteLine("A few people are moving about the town square.");
+          Console.WriteLine(location.getRandomDescription(), locationName);
           if (((Town)game.worldMap.locations[playerX, playerY]).hasMerchant == true)
           {
             Console.WriteLine("You see a weapon merchant");
@@ -302,32 +349,41 @@ namespace KillSomeMonsters.Menus
             Console.WriteLine("You see an entrance to the town sewer tunnels");
             options.Add("Enter Sewers");
           }
+          addNavOptions = true;
         }
         else if (locationGenericName == "forest")
         {
-          Console.WriteLine("A dim forest surrounds you and you hear birds chirping in the treetops");
-          Console.WriteLine("According to the last town you visited this forest is called " + locationName);
+          Console.WriteLine(location.getRandomDescription(), locationName);
+          options.Add("Go Hunting");
+          addNavOptions = true;
         }
         else if (locationGenericName == "mountain")
         {
-          Console.WriteLine("A mountain by the name of " + locationName + " blocks your path.");
-          Console.WriteLine("You can see a winding path vanish into the distance");
+          Console.WriteLine(location.getRandomDescription(), locationName);
+          options.Add("Go Hunting");
+          addNavOptions = true;
         }
         else if (locationGenericName == "sewer")
         {
-          Console.WriteLine("As you enter the damp drainage tunnels under the town you ask yourself what you could possibly find down here...");
+          Console.WriteLine(location.genericDescription);
+          options.Add("Go Hunting");
+          options.Add("Exit Sewers");
+          addNavOptions = false;
         }
 
         Console.Write("\n\n");
 
-        options.Add("Look North");
-        options.Add("Look West");
-        options.Add("Look East");
-        options.Add("Look South");
-        options.Add("Go North");
-        options.Add("Go West");
-        options.Add("Go East");
-        options.Add("Go South");
+        if (addNavOptions)
+        {
+          options.Add("Look North");
+          options.Add("Look West");
+          options.Add("Look East");
+          options.Add("Look South");
+          options.Add("Go North");
+          options.Add("Go West");
+          options.Add("Go East");
+          options.Add("Go South");
+        }
 
         for (int i = 0; i < options.Count; i++)
         {
@@ -349,14 +405,23 @@ namespace KillSomeMonsters.Menus
           { }
           else if (options[currentSelection] == "Enter Sewers")
           { }
+          else if (options[currentSelection] == "Go Hunting")
+          {
+            Random rand = new Random();
+            int number = rand.Next(0, Program.currentGame.worldMap.locations[Program.currentGame.player.x, Program.currentGame.player.y].enemies.Count - 1);
+            Enemy enemy = Program.currentGame.worldMap.locations[Program.currentGame.player.x, Program.currentGame.player.y].enemies[number];
+
+            combatMenu(Program.currentGame.player, enemy);
+          }
           else if (options[currentSelection] == "Look North")
           {
             if (game.worldMap.locations[game.player.x, game.player.y + 1] != null)
               Console.WriteLine(game.worldMap.locations[game.player.x, game.player.y +1].inspectLocation());
             else
             {
-              game.worldMap.locations[game.player.x, game.player.y + 1] = Location.generateRandomLocation(Program.enemiesPerLocation);
+              game.worldMap.locations[game.player.x, game.player.y + 1] = Location.generateRandomLocation(Program.enemiesPerLocationMin, Program.enemiesPerLocationMax);
               Console.WriteLine(game.worldMap.locations[game.player.x, game.player.y + 1].inspectLocation());
+              Console.WriteLine("...");
             }
             Console.ReadKey();
           }
@@ -366,8 +431,9 @@ namespace KillSomeMonsters.Menus
               Console.WriteLine(game.worldMap.locations[game.player.x - 1, game.player.y].inspectLocation());
             else
             {
-              game.worldMap.locations[game.player.x - 1, game.player.y] = Location.generateRandomLocation(Program.enemiesPerLocation);
+              game.worldMap.locations[game.player.x - 1, game.player.y] = Location.generateRandomLocation(Program.enemiesPerLocationMin, Program.enemiesPerLocationMax);
               Console.WriteLine(game.worldMap.locations[game.player.x - 1, game.player.y].inspectLocation());
+              Console.WriteLine("...");
             }
             Console.ReadKey();
           }
@@ -377,8 +443,9 @@ namespace KillSomeMonsters.Menus
               Console.WriteLine(game.worldMap.locations[game.player.x + 2, game.player.y].inspectLocation());
             else
             {
-              game.worldMap.locations[game.player.x + 2, game.player.y] = Location.generateRandomLocation(Program.enemiesPerLocation);
+              game.worldMap.locations[game.player.x + 2, game.player.y] = Location.generateRandomLocation(Program.enemiesPerLocationMin, Program.enemiesPerLocationMax);
               Console.WriteLine(game.worldMap.locations[game.player.x + 2, game.player.y].inspectLocation());
+              Console.WriteLine("...");
             }
             Console.ReadKey();
           }
@@ -388,33 +455,115 @@ namespace KillSomeMonsters.Menus
               Console.WriteLine(game.worldMap.locations[game.player.x, game.player.y - 1].inspectLocation());
             else
             {
-              game.worldMap.locations[game.player.x, game.player.y - 1] = Location.generateRandomLocation(Program.enemiesPerLocation);
+              game.worldMap.locations[game.player.x, game.player.y - 1] = Location.generateRandomLocation(Program.enemiesPerLocationMin, Program.enemiesPerLocationMax);
               Console.WriteLine(game.worldMap.locations[game.player.x, game.player.y - 1].inspectLocation());
+              Console.WriteLine("...");
             }
             Console.ReadKey();
           }
           else if (options[currentSelection] == "Go North")
           {
-            game.player.movePlayer(Direction.NORTH);
-            Console.WriteLine("You wander north until your surroundings turn into those of a " + game.worldMap.locations[game.player.x, game.player.y].genericName);
-            Console.ReadKey();
+            if (game.player.movePlayer(Direction.NORTH))
+            {
+              Console.WriteLine("You wander north until your surroundings turn into those of a " + game.worldMap.locations[game.player.x, game.player.y].genericName);
+              Console.WriteLine("...");
+              Console.ReadKey();
+            }
           }
           else if (options[currentSelection] == "Go West")
           {
-            game.player.movePlayer(Direction.WEST);
-            Console.WriteLine("You wander west until your surroundings turn into those of a " + game.worldMap.locations[game.player.x, game.player.y].genericName);
-            Console.ReadKey();
+            if (game.player.movePlayer(Direction.WEST))
+            {
+              Console.WriteLine("You wander west until your surroundings turn into those of a " + game.worldMap.locations[game.player.x, game.player.y].genericName);
+              Console.WriteLine("...");
+              Console.ReadKey();
+            }
           }
           else if (options[currentSelection] == "Go East")
           {
-            game.player.movePlayer(Direction.EAST);
-            Console.WriteLine("You wander east until your surroundings turn into those of a " + game.worldMap.locations[game.player.x, game.player.y].genericName);
-            Console.ReadKey();
+            if (game.player.movePlayer(Direction.EAST))
+            {
+              Console.WriteLine("You wander east until your surroundings turn into those of a " + game.worldMap.locations[game.player.x, game.player.y].genericName);
+              Console.WriteLine("...");
+              Console.ReadKey();
+            }
           }
           else if (options[currentSelection] == "Go South")
           {
-            game.player.movePlayer(Direction.SOUTH);
-            Console.WriteLine("You wander south until your surroundings turn into those of a " + game.worldMap.locations[game.player.x, game.player.y].genericName);
+            if (game.player.movePlayer(Direction.SOUTH))
+            {
+              Console.WriteLine("You wander south until your surroundings turn into those of a " + game.worldMap.locations[game.player.x, game.player.y].genericName);
+              Console.WriteLine("...");
+              Console.ReadKey();
+            }
+          }
+        }
+        else if (playerKey.Key.ToString() == "UpArrow")
+        {
+          currentSelection--;
+          if (currentSelection < 0)
+            currentSelection = options.Count;
+        }
+        else if (playerKey.Key.ToString() == "DownArrow")
+        {
+          currentSelection++;
+          if (currentSelection >= options.Count)
+            currentSelection = 0;
+        }
+      }
+    }
+
+    public static bool combatMenu(Player player, Creature opponent)
+    {
+      int currentSelection = 0;
+      bool exitThisMenu = false;
+
+      while (!exitThisMenu)
+      {
+        List<string> options = new List<string>();
+
+        options.Add("Attack");
+        options.Add("Defend");
+        if (player.potion.Count > 0)
+        {
+          options.Add("Throw Potion");
+          options.Add("Drink Potion");
+        }
+        options.Add("Run away");
+
+        Console.WriteLine("You find youself facing a vicious " + opponent.name);
+        Console.WriteLine("The creature looks " + opponent.getGeneralHealth());
+        Console.WriteLine();
+
+        for (int i = 0; i < options.Count; i++)
+        {
+          string prefix = "   ";
+          if (i == currentSelection)
+            prefix = " > ";
+
+          Console.WriteLine(prefix + options[i]);
+        }
+
+        ConsoleKeyInfo playerKey = Console.ReadKey();
+
+        if (playerKey.Key.ToString() == "Enter")
+        {
+          if (options[currentSelection] == "Attack")
+          {
+            int dexterity = Utility.rollDice(player.dexterity);
+            int strength = Utility.rollDice(player.strength);
+            int opponentSpeed = Utility.rollDice(opponent.speed);
+
+            if (dexterity >= opponentSpeed)
+            {
+              int damage = opponent.getReducedDamageAgainstArmor(strength + player.getWeaponDamage());
+              Console.WriteLine("You swing your " + player.weapon.name + " at the creature and do " + damage + " damage!");
+              opponent.applyDamage(damage);
+            }
+            else
+              Console.WriteLine("You swing your " + player.weapon.name + " at the creature but miss and tumble past it!");
+
+            Console.WriteLine("...");
             Console.ReadKey();
           }
         }

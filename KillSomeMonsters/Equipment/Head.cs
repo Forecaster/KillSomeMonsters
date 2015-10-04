@@ -8,19 +8,18 @@ namespace KillSomeMonsters.Equipment
 {
   public class Head : Armor
   {
-    public Head(string name) : this(name, 1, 1) { }
+    public Head(string name) : this(name, 1) { }
 
-    public Head(string name, int value, int armorBonus) : this(name, value, armorBonus, 20) { }
+    public Head(string name, int armorBonus) : this(name, armorBonus, 10, 10, 5) { }
 
-    public Head(string name, int value, int armorBonus, int maxHealth)
+    public Head(string name, int armorBonus, int maxHealth, int health, int value)
     {
       this.name = name;
       this.value = value;
-      this.valueLoss = 0.0;
+      this.valueModifier = 3;
       this.armorBonus = armorBonus;
       this.maxHealth = maxHealth;
-      this.health = maxHealth;
-      this.shattered = false;
+      this.health = health;
     }
   }
 }

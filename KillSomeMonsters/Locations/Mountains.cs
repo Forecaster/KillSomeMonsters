@@ -9,14 +9,18 @@ namespace KillSomeMonsters.Locations
 {
   public class Mountains : Location
   {
-    public Mountains(string name, int numberOfEnemies)
+    public Mountains(string name, int minEnemies, int maxEnemies)
     {
       Random rand = new Random();
       this.name = name;
       this.genericName = "mountain";
       this.genericPlural = "mountains";
+      this.genericDescription = new List<string>();
+      this.genericDescription.Add("A rocky area by the name of {0} blocks your path.\nYou can see a winding path vanish into the distance");
 
-      for (int i = 0; i < numberOfEnemies; i++)
+      int enemies = rand.Next(minEnemies, maxEnemies);
+
+      for (int i = 0; i < enemies; i++)
       {
         int randomName = rand.Next(0, EnemyNames.namesEnemies.Count);
         int minValue = Math.Max((Program.currentGame.player.level - 1), 1);

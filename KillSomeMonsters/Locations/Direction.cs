@@ -19,13 +19,18 @@ namespace KillSomeMonsters.Locations
       WEST = new West();
       SOUTH = new South();
     }
+
+    public virtual Direction reverse()
+    {
+      throw new NotImplementedException("This method shouldn't have been called!");
+    }
   }
 
   public class North : Direction
   {
     public North() { }
 
-    public Direction reverse()
+    public override Direction reverse()
     {
       return Direction.SOUTH;
     }
@@ -35,7 +40,7 @@ namespace KillSomeMonsters.Locations
   {
     public East() { }
 
-    public Direction reverse()
+    public override Direction reverse()
     {
       return Direction.WEST;
     }
@@ -45,7 +50,7 @@ namespace KillSomeMonsters.Locations
   {
     public West() { }
 
-    public Direction reverse()
+    public override Direction reverse()
     {
       return Direction.EAST;
     }
@@ -55,7 +60,7 @@ namespace KillSomeMonsters.Locations
   {
     public South() { }
 
-    public Direction reverse()
+    public override Direction reverse()
     {
       return Direction.NORTH;
     }

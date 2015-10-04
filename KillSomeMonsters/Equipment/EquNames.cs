@@ -12,6 +12,8 @@ namespace KillSomeMonsters.Equipment
     public static List<string> namesHead = new List<string>();
     public static List<string> namesShield = new List<string>();
     public static List<string> namesWeapon = new List<string>();
+    public static List<string> namesPotionHeal = new List<string>();
+    public static List<string> namesPotionDamage = new List<string>();
 
     static EquNames()
     {
@@ -48,6 +50,16 @@ namespace KillSomeMonsters.Equipment
       namesWeapon.Add("Claymore");
       namesWeapon.Add("Crooked Shortsword");
       namesWeapon.Add("Magic Wand");
+
+      namesPotionHeal.Add("Potion of Healing");
+      namesPotionHeal.Add("Soothing Salve");
+      namesPotionHeal.Add("Miracle Drink");
+      namesPotionHeal.Add("Aloe Vera");
+
+      namesPotionDamage.Add("Volatile Compound");
+      namesPotionDamage.Add("Unstable Fluid");
+      namesPotionDamage.Add("Explosive Concotion");
+      namesPotionDamage.Add("Fiery Brew");
     }
   }
 }

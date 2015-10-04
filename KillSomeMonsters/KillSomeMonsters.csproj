@@ -73,6 +73,7 @@
     <Compile Include="StatEffects\Damage.cs" />
     <Compile Include="StatEffects\Effect.cs" />
     <Compile Include="StatEffects\Heal.cs" />
+    <Compile Include="Utility.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

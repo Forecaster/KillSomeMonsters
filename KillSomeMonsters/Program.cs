@@ -17,7 +17,9 @@ namespace KillSomeMonsters
     public static bool gameInProgress = false;
     public static string gameName = "Kill Some Monsters or something";
     public static string authorName = "Forecaster";
-    public static int enemiesPerLocation = 3;
+    public static int enemiesPerLocationMin = 3;
+    public static int enemiesPerLocationMax = 6;
+    public static int maxPotionCarry = 3;
 
     public static int worldSizeX = 15;
     public static int worldSizeY = 15;

@@ -25,6 +25,10 @@ namespace KillSomeMonsters.Locations
       this.name = name;
       this.genericName = "town";
       this.genericPlural = "towns";
+      this.genericDescription = new List<string>();
+      this.genericDescription.Add("You find yourself in the town sqare of {0}.\nA few people are moving about the town square.");
+      this.genericDescription.Add("A quiet little town by the name of {0} finds itself graced by your precense.");
+
       this.hasMerchant = hasMerchant;
       this.merchantGold = merchantGold;
       this.hasInn = hasInn;
@@ -36,7 +40,7 @@ namespace KillSomeMonsters.Locations
 
       if (number >= 0 && number <= 25)
       {
-        this.sewer = new Sewer(4);
+        this.sewer = new Sewer(Program.enemiesPerLocationMin, Program.enemiesPerLocationMax);
         this.hasSewer = true;
       }
       else
