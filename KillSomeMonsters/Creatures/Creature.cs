@@ -1,4 +1,4 @@
-﻿using KillSomeMonsters.Equipment;
+﻿using KillSomeMonsters.Items;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -65,20 +65,55 @@ namespace KillSomeMonsters.Creatures
 
     /*
      * Calculates hit location and applies relevant damage reduction depending on armor and blocking
+     * Returns damage after reduction as well as hit location
      */
-    public int getReducedDamageAgainstArmor(int damage)
+    public Tuple<int, int, string> getReducedDamageAgainstArmor(int initialDamage, int opponentDexterity)
     {
-      Random rand = new Random();
-      int hitLocation = rand.Next(0, 2);
+      List<string> hitLocations = new List<string>();
+      opponentDexterity = Utility.rollDice(1 + opponentDexterity);
+      int speed = Utility.rollDice(1 + this.speed);
+      hitLocations.Add("Head");
+      hitLocations.Add("Body");
+      if (this.shielding)
+        hitLocations.Add("Shield");
 
-      if (hitLocation == 0 && this.helmet != null)
-        return Math.Max(1, (damage - this.helmet.armorBonus));
-      else if (hitLocation == 1 && this.armor != null)
-        return Math.Max(1, (damage - this.armor.armorBonus));
-      else if (hitLocation == 2 && this.shield != null && this.shielding)
-        return Math.Max(1, (damage - this.shield.armorBonus));
+      Console.WriteLine("initialDamage: " + initialDamage);
+
+      Random rand = new Random();
+      int hitChancePenalty;
+      if (opponentDexterity > Utility.rollDice(1 + speed)) //If opponent dexterity is greater than my speed opponent gets no penalty to hit
+        hitChancePenalty = 0;
       else
-        return damage;
+        hitChancePenalty = speed - opponentDexterity; //If opponent dexterity is less than my speed the difference is used as the penalty to hit
+
+      int hitChanceMax = (hitLocations.Count - 1) + hitChancePenalty + 2;
+      int hit = rand.Next(0, hitChanceMax);
+
+      if (hit >= hitLocations.Count)
+        return Tuple.Create(0, 0, "Miss");
+      else if (hitLocations[hit] == "Head")
+      {
+        int reduction = this.helmet.armorBonus;
+        int damage = Math.Max(1, initialDamage - reduction);
+        this.helmet.takeDamage(damage);
+        return Tuple.Create(initialDamage, reduction, hitLocations[hit]);
+      }
+      else if (hitLocations[hit] == "Body")
+      {
+        int reduction = this.armor.armorBonus;
+        int damage = Math.Max(1, initialDamage - reduction);
+        this.armor.takeDamage(damage);
+        return Tuple.Create(initialDamage, reduction, hitLocations[hit]);
+      }
+      else if (hitLocations[hit] == "Shield")
+      {
+        int reduction = this.shield.armorBonus;
+        int damage = Math.Max(1, initialDamage - reduction);
+        this.shield.takeDamage(damage);
+        return Tuple.Create(initialDamage, reduction, hitLocations[hit]);
+      }
+      else
+        return Tuple.Create(0, 0, "Miss");
     }
 
     public void applyDamage(int amount)

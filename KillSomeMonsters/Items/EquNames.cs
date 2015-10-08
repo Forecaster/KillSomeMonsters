@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace KillSomeMonsters.Equipment
+namespace KillSomeMonsters.Items
 {
   public class EquNames
   {
@@ -44,7 +44,7 @@ namespace KillSomeMonsters.Equipment
       namesWeapon.Add("Dagger of Stabbing");
       namesWeapon.Add("Pointed Stick");
       namesWeapon.Add("Wrath Hammer");
-      namesWeapon.Add("Cheap Mace");
+      namesWeapon.Add("Shoddy Mace");
       namesWeapon.Add("Frying Pan");
       namesWeapon.Add("Boomerang");
       namesWeapon.Add("Claymore");

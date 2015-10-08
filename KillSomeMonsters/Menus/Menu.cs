@@ -1,4 +1,5 @@
 ﻿using KillSomeMonsters.Creatures;
+using KillSomeMonsters.Items;
 using KillSomeMonsters.Locations;
 using System;
 using System.Collections.Generic;
@@ -29,25 +30,24 @@ namespace KillSomeMonsters.Menus
       {
         for (int i = 0; i < options.Count; i++)
         {
-          string prefix = "   ";
-          if (i == currentSelection)
-            prefix = " > ";
-
-          Console.WriteLine(prefix + options[i]);
+          if (currentSelection == i)
+            Console.WriteLine(Program.cursor + options[i]);
+          else
+            Console.WriteLine("   " + options[i]);
         }
 
-        ConsoleKeyInfo userKey = Console.ReadKey();
+        string userKey = Console.ReadKey().Key.ToString();
 
-        if (userKey.Key.ToString() == "Enter")
+        if (userKey == "Enter")
           exitMenu = true;
-        else if (userKey.Key.ToString() == "UpArrow")
+        else if (userKey == "UpArrow")
         {
           if (currentSelection == 0)
             currentSelection = options.Count - 1;
           else
             currentSelection--;
         }
-        else if (userKey.Key.ToString() == "DownArrow")
+        else if (userKey == "DownArrow")
         {
           if (currentSelection == options.Count - 1)
             currentSelection = 0;
@@ -82,18 +82,19 @@ namespace KillSomeMonsters.Menus
      */
     public static void mainMenu()
     {
-      bool goForth = false;
+      bool exitThisMenu = false;
       int currentSelection = 1;
       if (Program.currentGame != null)
         currentSelection = 0;
 
-      while (!goForth)
+      while (!exitThisMenu)
       {
         int maxWidth = Console.BufferWidth - 1;
 
         List<string> options = new List<string>();
         options.Add("Continue");
         options.Add("New Game");
+        options.Add("Debug mode: {0}");
         options.Add("Quit");
 
         Console.Clear();
@@ -110,7 +111,7 @@ namespace KillSomeMonsters.Menus
         {
           string prefix = "   ";
           if (i == currentSelection)
-            prefix = " > ";
+            prefix = Program.cursor;
 
           if (i == 0)
           {
@@ -124,39 +125,43 @@ namespace KillSomeMonsters.Menus
             else
               Console.WriteLine(prefix + options[i]);
           }
+          else if (i == 2)
+          {
+            Console.WriteLine(prefix + options[i], Program.debugModeEnabled.ToString());
+          }
           else
             Console.WriteLine(prefix + options[i]);
         }
 
-        ConsoleKeyInfo userKey = Console.ReadKey(true);
+        string userKey = Console.ReadKey(true).Key.ToString();
 
-        if (userKey.Key.ToString() == "Enter")
+        if (userKey == "Enter")
         {
-          if (currentSelection == 0 && Program.gameInProgress == false)
-            goForth = false;
-          else
-            goForth = true;
+          if (options[currentSelection] == "Continue" && Program.gameInProgress == false)
+            Console.WriteLine("Continue"); //replace with action when selecting "continue"
+          else if (options[currentSelection] == "New Game")
+            newGame();
+          else if (options[currentSelection] == "Quit")
+            exitThisMenu = true;
         }
-        else if (userKey.Key.ToString() == "UpArrow")
+        else if (userKey == "UpArrow")
         {
           currentSelection--;
           if (currentSelection < 0)
             currentSelection = 2;
         }
-        else if (userKey.Key.ToString() == "DownArrow")
+        else if (userKey == "DownArrow")
         {
           currentSelection++;
-          if (currentSelection > 2)
+          if (currentSelection > 3)
             currentSelection = 0;
         }
+        else if (userKey == "LeftArrow" || userKey == "RightArrow")
+        {
+          if (currentSelection == 2)
+            Program.debugModeEnabled = Utility.invertBoolean(Program.debugModeEnabled);
+        }
       }
-
-      if (currentSelection == 0)
-        Console.WriteLine("Continue"); //replace with action when selecting "continue"
-      else if (currentSelection == 1)
-        newGame();
-      else if (currentSelection == 2)
-        Console.WriteLine("Quit"); //this shouldn't really do anything, just let the program terminate
     }
 
     /*
@@ -169,7 +174,7 @@ namespace KillSomeMonsters.Menus
       int speed = 0;
       int dexterity = 0;
       int currentSelection = 0;
-      int pointsToSpend = 6;
+      int pointsToSpend = 2;
 
       List<string> options = new List<string>();
 
@@ -214,32 +219,32 @@ namespace KillSomeMonsters.Menus
             }
 
             if (currentSelection == i)
-              prefix = " > ";
+              prefix = Program.cursor;
 
             Console.WriteLine(prefix + options[i] + ": " + value);
           }
 
           Console.WriteLine("\n\n   Points to spend: " + pointsToSpend);
 
-          ConsoleKeyInfo userKey = Console.ReadKey();
+          string userKey = Console.ReadKey().Key.ToString();
 
-          if (userKey.Key.ToString() == "Enter")
+          if (userKey == "Enter")
           {
             newGameStage++;
           }
-          else if (userKey.Key.ToString() == "UpArrow")
+          else if (userKey == "UpArrow")
           {
             currentSelection--;
             if (currentSelection < 0)
               currentSelection = 3;
           }
-          else if (userKey.Key.ToString() == "DownArrow")
+          else if (userKey == "DownArrow")
           {
             currentSelection++;
             if (currentSelection > 3)
               currentSelection = 0;
           }
-          else if (userKey.Key.ToString() == "LeftArrow")
+          else if (userKey == "LeftArrow")
           {
             if (currentSelection == 0)
             {
@@ -274,7 +279,7 @@ namespace KillSomeMonsters.Menus
               }
             }
           }
-          else if (userKey.Key.ToString() == "RightArrow")
+          else if (userKey == "RightArrow")
           {
             if (pointsToSpend > 0)
             {
@@ -303,10 +308,11 @@ namespace KillSomeMonsters.Menus
             characterName = playerNames.getRandomPlayerName();
 
           doneCreatingGame = true;
+          newGameStage = 0;
         }
       }
-
-      Program.currentGame = new Game(new Player(characterName, fortitude, strength, speed, dexterity));
+      Player player = new Player(characterName, fortitude, strength, speed, dexterity);
+      Program.currentGame = new Game(player);
       Program.gameInProgress = true;
       gameMenu(ref Program.currentGame);
     }
@@ -314,11 +320,12 @@ namespace KillSomeMonsters.Menus
     /*
      * This method represents the menu used to move around the world
      */
-    static void gameMenu(ref Game game)
+    public static void gameMenu(ref Game game)
     {
       int currentSelection = 0;
       bool exitThisMenu = false;
       bool addNavOptions = true;
+      string currentLocationDescription = ""; //this keeps the game from displaying a random description every time the menu is redrawn, a new one is picked only when you move to a new location
 
       while (!exitThisMenu)
       {
@@ -330,10 +337,17 @@ namespace KillSomeMonsters.Menus
         Console.Clear();
         List<string> options = new List<string>();
         drawPlayerStatus(game.player);
+
+        if (Program.debugModeEnabled)
+        {
+          Console.WriteLine("[Debug] Enemies left: " + location.enemies.Count);
+          Console.WriteLine();
+          options.Add("[Debug] Heal");
+        }
         
         if (locationGenericName == "town")
         {
-          Console.WriteLine(location.getRandomDescription(), locationName);
+          Console.WriteLine(currentLocationDescription, locationName); //Writes current location description and inserts the location name into it
           if (((Town)game.worldMap.locations[playerX, playerY]).hasMerchant == true)
           {
             Console.WriteLine("You see a weapon merchant");
@@ -353,19 +367,19 @@ namespace KillSomeMonsters.Menus
         }
         else if (locationGenericName == "forest")
         {
-          Console.WriteLine(location.getRandomDescription(), locationName);
+          Console.WriteLine(currentLocationDescription, locationName); //Writes current location description and inserts the location name into it
           options.Add("Go Hunting");
           addNavOptions = true;
         }
         else if (locationGenericName == "mountain")
         {
-          Console.WriteLine(location.getRandomDescription(), locationName);
+          Console.WriteLine(currentLocationDescription, locationName); //Writes current location description and inserts the location name into it
           options.Add("Go Hunting");
           addNavOptions = true;
         }
         else if (locationGenericName == "sewer")
         {
-          Console.WriteLine(location.genericDescription);
+          Console.WriteLine(currentLocationDescription, locationName); //Writes current location description and inserts the location name into it
           options.Add("Go Hunting");
           options.Add("Exit Sewers");
           addNavOptions = false;
@@ -389,29 +403,65 @@ namespace KillSomeMonsters.Menus
         {
           string prefix = "   ";
           if (i == currentSelection)
-            prefix = " > ";
+            prefix = Program.cursor;
 
           Console.WriteLine(prefix + options[i]);
         }
 
-        ConsoleKeyInfo playerKey = Console.ReadKey();
+        string playerKey = Console.ReadKey().Key.ToString();
         Console.WriteLine();
 
-        if (playerKey.Key.ToString() == "Enter")
+        if (playerKey == "Enter")
         {
-          if (options[currentSelection] == "Visit Merchant")
-          { }
+          if (options[currentSelection] == "[Debug] Heal")
+          {
+            game.player.health = game.player.maxHealth;
+          }
+          else if (options[currentSelection] == "Visit Merchant")
+          {
+            merchantMenu(((Town)location).merchant);
+          }
           else if (options[currentSelection] == "Visit Inn")
           { }
           else if (options[currentSelection] == "Enter Sewers")
           { }
           else if (options[currentSelection] == "Go Hunting")
           {
-            Random rand = new Random();
-            int number = rand.Next(0, Program.currentGame.worldMap.locations[Program.currentGame.player.x, Program.currentGame.player.y].enemies.Count - 1);
-            Enemy enemy = Program.currentGame.worldMap.locations[Program.currentGame.player.x, Program.currentGame.player.y].enemies[number];
+            Location currentLocation = Program.currentGame.worldMap.locations[Program.currentGame.player.x, Program.currentGame.player.y];
+            if (currentLocation.enemies.Count > 0)
+            {
+              Random rand = new Random();
+              int number = rand.Next(0, currentLocation.enemies.Count - 1);
+              Enemy enemy = currentLocation.enemies[number];
 
-            combatMenu(Program.currentGame.player, enemy);
+              Console.WriteLine("You don't have to wander far until you hear something evil rustle some shrubbery nearby");
+              Console.WriteLine("...");
+              Console.ReadKey();
+
+              string combatResult = combatMenu(Program.currentGame.player, enemy);
+              if (combatResult == "opponentDefeat")
+              {
+                currentLocation.enemies.RemoveAt(number);
+                Console.WriteLine("You strike a dramatic victory pose as your opponent collapses behind you! You won the battle!");
+                Console.WriteLine("...");
+                Console.ReadKey();
+              }
+              else if (combatResult == "playerDefeat")
+              {
+                Console.WriteLine("You look down at the " + enemy.weapon.name + " embedded in your chest as you bleed profusly on the ground. This is the end for you.");
+                Console.WriteLine("...");
+                Console.ReadKey();
+                Program.currentGame = null;
+                Program.gameInProgress = false;
+                return;
+              }
+              else if (combatResult == "opponentEscape")
+              {
+                Console.WriteLine("You try to catch up to the creature sprinting away from you, but fail to keep up.");
+                Console.WriteLine("...");
+                Console.ReadKey();
+              }
+            }
           }
           else if (options[currentSelection] == "Look North")
           {
@@ -465,6 +515,7 @@ namespace KillSomeMonsters.Menus
           {
             if (game.player.movePlayer(Direction.NORTH))
             {
+              currentLocationDescription = game.worldMap.locations[game.player.x, game.player.y].getRandomDescription();
               Console.WriteLine("You wander north until your surroundings turn into those of a " + game.worldMap.locations[game.player.x, game.player.y].genericName);
               Console.WriteLine("...");
               Console.ReadKey();
@@ -474,6 +525,7 @@ namespace KillSomeMonsters.Menus
           {
             if (game.player.movePlayer(Direction.WEST))
             {
+              currentLocationDescription = game.worldMap.locations[game.player.x, game.player.y].getRandomDescription();
               Console.WriteLine("You wander west until your surroundings turn into those of a " + game.worldMap.locations[game.player.x, game.player.y].genericName);
               Console.WriteLine("...");
               Console.ReadKey();
@@ -483,6 +535,7 @@ namespace KillSomeMonsters.Menus
           {
             if (game.player.movePlayer(Direction.EAST))
             {
+              currentLocationDescription = game.worldMap.locations[game.player.x, game.player.y].getRandomDescription();
               Console.WriteLine("You wander east until your surroundings turn into those of a " + game.worldMap.locations[game.player.x, game.player.y].genericName);
               Console.WriteLine("...");
               Console.ReadKey();
@@ -492,10 +545,104 @@ namespace KillSomeMonsters.Menus
           {
             if (game.player.movePlayer(Direction.SOUTH))
             {
+              currentLocationDescription = game.worldMap.locations[game.player.x, game.player.y].getRandomDescription();
               Console.WriteLine("You wander south until your surroundings turn into those of a " + game.worldMap.locations[game.player.x, game.player.y].genericName);
               Console.WriteLine("...");
               Console.ReadKey();
             }
+          }
+        }
+        else if (playerKey == "UpArrow")
+        {
+          currentSelection--;
+          if (currentSelection < 0)
+            currentSelection = options.Count;
+        }
+        else if (playerKey == "DownArrow")
+        {
+          currentSelection++;
+          if (currentSelection >= options.Count)
+            currentSelection = 0;
+        }
+      }
+    }
+
+    /**
+     * Returns true if opponent was defeated, false if player died or opponent escaped
+     */
+    public static string combatMenu(Player player, Creature opponent)
+    {
+      int currentSelection = 0;
+      bool exitThisMenu = false;
+
+      while (!exitThisMenu)
+      {
+        List<string> options = new List<string>();
+        Console.Clear();
+        Menu.drawPlayerStatus(player);
+
+        options.Add("Attack");
+        options.Add("Defend");
+        if (player.potion.Count > 0)
+        {
+          options.Add("Throw Potion");
+          options.Add("Drink Potion");
+        }
+        options.Add("Run away");
+
+        Console.WriteLine("You find youself facing a vicious " + opponent.name + " wearing a " + opponent.armor.name + " and a " + opponent.helmet.name);
+        if (opponent.shield != null)
+          Console.WriteLine("It is carrying a shield");
+        Console.WriteLine("The creature looks " + opponent.getGeneralHealth());
+        Console.WriteLine();
+
+        if (Program.debugModeEnabled)
+        {
+          Console.WriteLine("[Debug]" + opponent.health + "/" + opponent.maxHealth);
+          Console.WriteLine("[Debug] Shielding: " + opponent.shielding);
+        }
+
+        for (int i = 0; i < options.Count; i++)
+        {
+          string prefix = "   ";
+          if (i == currentSelection)
+            prefix = Program.cursor;
+
+          Console.WriteLine(prefix + options[i]);
+        }
+
+        ConsoleKeyInfo playerKey = Console.ReadKey();
+
+        if (playerKey.Key.ToString() == "Enter")
+        {
+          if (options[currentSelection] == "Attack")
+          {
+            Tuple<int, int, string> result = opponent.getReducedDamageAgainstArmor(Utility.rollDice(player.strength) + player.getWeaponDamage(), player.dexterity);
+            if (result.Item3 != "Miss")
+            {
+              Console.WriteLine("You swing your " + player.weapon.name + " at the creature and strike it's " + result.Item3 + " and do " + result.Item1 + " damage!");
+              if (result.Item2 > 0)
+                Console.WriteLine("It's armor absorbed " + result.Item2 + " damage.");
+              opponent.applyDamage(result.Item1);
+            }
+            else
+              Console.WriteLine("You swing your " + player.weapon.name + " at the creature but miss and tumble past it!");
+
+
+            Console.WriteLine("...");
+            Console.ReadKey();
+
+            if (opponent.health == 0)
+            {
+              player.gold += opponent.gold;
+              return "opponentDefeat";
+            }
+            else
+              if (((Enemy)opponent).enemyTurn(player) == "escapeSuccess")
+                return "opponentEscape";
+
+            if (player.health == 0)
+              return "playerDefeat";
           }
         }
         else if (playerKey.Key.ToString() == "UpArrow")
@@ -511,73 +658,183 @@ namespace KillSomeMonsters.Menus
             currentSelection = 0;
         }
       }
+
+      //combat over
+      Console.WriteLine("Combat has ended");
+      Console.ReadKey();
+      return "unknownOutcome";
     }
 
-    public static bool combatMenu(Player player, Creature opponent)
+    public static void merchantMenu(Merchant merchant)
     {
-      int currentSelection = 0;
       bool exitThisMenu = false;
+      bool exitSubMenu = false;
+      List<string> options = new List<string>();
+      int currentSelection = 0;
 
       while (!exitThisMenu)
       {
-        List<string> options = new List<string>();
+        Console.Clear();
+        options.Clear();
+        drawPlayerStatus(Program.currentGame.player);
 
-        options.Add("Attack");
-        options.Add("Defend");
-        if (player.potion.Count > 0)
-        {
-          options.Add("Throw Potion");
-          options.Add("Drink Potion");
-        }
-        options.Add("Run away");
-
-        Console.WriteLine("You find youself facing a vicious " + opponent.name);
-        Console.WriteLine("The creature looks " + opponent.getGeneralHealth());
+        Console.WriteLine("The merchant greets you as you enter the shop:");
+        Console.WriteLine("\"Hello! I'm {0}! How can I help you?!", merchant.name);
         Console.WriteLine();
+        Console.WriteLine("Current Weapon:  " + Program.currentGame.player.weapon.name);
+        Console.WriteLine("Current Armor:   " + Program.currentGame.player.armor.name);
+        Console.WriteLine("Current Helmet:  " + Program.currentGame.player.helmet.name);
+        if (Program.currentGame.player.shield != null)
+          Console.WriteLine("Current Shield: " + Program.currentGame.player.shield.name);
+        Console.WriteLine();
+
+        if (merchant.weapons.Count > 0)
+          options.Add("Show Weapons");
+        if (merchant.armor.Count > 0)
+          options.Add("Show Bodywear");
+        if (merchant.headwear.Count > 0)
+          options.Add("Show Headwear");
+        if (merchant.shields.Count > 0)
+          options.Add("Show Shields");
+        if (merchant.potions.Count > 0)
+          options.Add("Show Potions");
+        options.Add("Back");
 
         for (int i = 0; i < options.Count; i++)
         {
-          string prefix = "   ";
-          if (i == currentSelection)
-            prefix = " > ";
-
-          Console.WriteLine(prefix + options[i]);
+          if (currentSelection == i)
+            Console.WriteLine(Program.cursor + options[i]);
+          else
+            Console.WriteLine("   " + options[i]);
         }
 
-        ConsoleKeyInfo playerKey = Console.ReadKey();
+        string userKey = Console.ReadKey().Key.ToString();
 
-        if (playerKey.Key.ToString() == "Enter")
+        if (userKey == "Enter")
         {
-          if (options[currentSelection] == "Attack")
+          string choice = "";
+          if (options[currentSelection] == "Show Weapons")
+            choice = "weapon";
+          else if (options[currentSelection] == "Show Bodywear")
+            choice = "body";
+          else if (options[currentSelection] == "Show Headwear")
+            choice = "head";
+          else if (options[currentSelection] == "Show Shields")
+            choice = "shield";
+          else if (options[currentSelection] == "Show Potions")
+            choice = "potion";
+          else if (options[currentSelection] == "Back")
+            exitThisMenu = true;
+
+          if (choice == "weapon" || choice == "body" || choice == "head" || choice == "shield" || choice == "potion")
           {
-            int dexterity = Utility.rollDice(player.dexterity);
-            int strength = Utility.rollDice(player.strength);
-            int opponentSpeed = Utility.rollDice(opponent.speed);
+            List<Equipment> wares = new List<Equipment>();
+            if (choice == "weapon")
+              wares.InsertRange(0, merchant.weapons);
+            else if (choice == "body")
+              wares.InsertRange(0, merchant.armor);
+            else if (choice == "head")
+              wares.InsertRange(0, merchant.headwear);
+            else if (choice == "shield")
+              wares.InsertRange(0, merchant.shields);
+            else if (choice == "potion")
+              wares.InsertRange(0, merchant.potions);
 
-            if (dexterity >= opponentSpeed)
+            currentSelection = 0;
+            exitSubMenu = false;
+            while (!exitSubMenu)
             {
-              int damage = opponent.getReducedDamageAgainstArmor(strength + player.getWeaponDamage());
-              Console.WriteLine("You swing your " + player.weapon.name + " at the creature and do " + damage + " damage!");
-              opponent.applyDamage(damage);
-            }
-            else
-              Console.WriteLine("You swing your " + player.weapon.name + " at the creature but miss and tumble past it!");
+              Console.Clear();
+              drawPlayerStatus(Program.currentGame.player);
 
-            Console.WriteLine("...");
-            Console.ReadKey();
+              for (int f = 0; f < wares.Count; f++)
+              {
+                string prefix = "   ";
+                if (currentSelection == f)
+                  prefix = Program.cursor;
+
+                string wareName = wares[f].name;
+                string wareAttribute = "";
+                switch (choice)
+                {
+                  case "weapon":
+                    wareAttribute = ((Weapon)wares[f]).damage.ToString();
+                    break;
+                  case "body":
+                  case "head":
+                  case "shield":
+                    wareAttribute = ((Armor)wares[f]).armorBonus.ToString();
+                    break;
+                  case "potion":
+                    wareAttribute = ((Potion)wares[f]).magnitude.ToString();
+                    break;
+                }
+                int wareValue = wares[f].value;
+
+                Console.WriteLine(prefix + wareName + " +" + wareAttribute + " (" + wareValue + "g)");
+              }
+
+              Console.WriteLine("\nPress Escape to go back.");
+
+              userKey = Console.ReadKey().Key.ToString();
+
+              if (userKey == "Enter")
+              {
+                if (wares[currentSelection].value <= Program.currentGame.player.gold)
+                {
+                  if (choice == "weapon")
+                    Program.currentGame.player.weapon = merchant.purchaseWeapon(currentSelection);
+                  else if (choice == "body")
+                    Program.currentGame.player.armor = merchant.purchaseBody(currentSelection);
+                  else if (choice == "head")
+                    Program.currentGame.player.helmet = merchant.purchaseHead(currentSelection);
+                  else if (choice == "shield")
+                    Program.currentGame.player.shield = merchant.purchaseShield(currentSelection);
+                  else if (choice == "potion")
+                    if (Program.currentGame.player.potion.Count < Program.maxPotionCarry)
+                      Program.currentGame.player.potion.Add(merchant.purchasePotion(currentSelection));
+                  Console.WriteLine("You bought a " + wares[currentSelection].name + "!");
+                  Console.WriteLine("...");
+                  Console.ReadKey();
+                  exitSubMenu = true;
+                }
+                else
+                {
+                  Console.WriteLine("You can't afford this.");
+                  Console.WriteLine("...");
+                  Console.ReadKey();
+                }
+              }
+              else if (userKey == "DownArrow")
+              {
+                currentSelection++;
+                if (currentSelection > wares.Count - 1)
+                  currentSelection = 0;
+              }
+              else if (userKey == "UpArrow")
+              {
+                currentSelection--;
+                if (currentSelection < 0)
+                  currentSelection = wares.Count - 1;
+              }
+              else if (userKey == "Escape")
+              {
+                exitSubMenu = true;
+              }
+            }
           }
         }
-        else if (playerKey.Key.ToString() == "UpArrow")
+        else if (userKey == "DownArrow")
+        {
+          currentSelection++;
+          if (currentSelection > options.Count - 1)
+            currentSelection = 0;
+        }
+        else if (userKey == "UpArrow")
         {
           currentSelection--;
           if (currentSelection < 0)
-            currentSelection = options.Count;
-        }
-        else if (playerKey.Key.ToString() == "DownArrow")
-        {
-          currentSelection++;
-          if (currentSelection >= options.Count)
-            currentSelection = 0;
+            currentSelection = options.Count - 1;
         }
       }
     }

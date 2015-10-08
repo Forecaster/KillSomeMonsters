@@ -15,8 +15,8 @@ namespace KillSomeMonsters
     
     public Game(Player player)
     {
-      this.worldMap = new WorldMap();
       this.player = player;
+      this.worldMap = new WorldMap();
     }
   }
 }

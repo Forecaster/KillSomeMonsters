@@ -1,4 +1,4 @@
-﻿using KillSomeMonsters.Equipment;
+﻿using KillSomeMonsters.Items;
 using KillSomeMonsters.Locations;
 using System;
 using System.Collections.Generic;
@@ -30,6 +30,10 @@ namespace KillSomeMonsters.Creatures
 
       this.shielding = false;
 
+      this.weapon = Items.Equipment.getDefaultWeapon();
+      this.armor = Items.Equipment.getDefaultBody();
+      this.helmet = Items.Equipment.getDefaultHead();
+
       this.x = 8;
       this.y = 8;
       this.experience = 0;
@@ -43,11 +47,10 @@ namespace KillSomeMonsters.Creatures
         {
           if (this.y < Program.worldSizeY)
           {
-            Location destination = Program.currentGame.worldMap.locations[this.x, this.y + 1];
-            if (destination == null)
-              Program.currentGame.worldMap.locations[this.x, this.y] = Location.generateRandomLocation(Program.enemiesPerLocationMin, Program.enemiesPerLocationMax);
             this.y++;
-            destination.arrive();
+            if (Program.currentGame.worldMap.locations[this.x, this.y] == null)
+              Program.currentGame.worldMap.locations[this.x, this.y] = Location.generateRandomLocation(Program.enemiesPerLocationMin, Program.enemiesPerLocationMax);
+            Program.currentGame.worldMap.locations[this.x, this.y].arrive();
             this.lastMove = direction;
             return true;
           }
@@ -58,11 +61,10 @@ namespace KillSomeMonsters.Creatures
         {
           if (this.x > 0)
           {
-            Location destination = Program.currentGame.worldMap.locations[this.x + 1, this.y];
-            if (destination == null)
-              Program.currentGame.worldMap.locations[this.x, this.y] = Location.generateRandomLocation(Program.enemiesPerLocationMin, Program.enemiesPerLocationMax);
             this.x++;
-            destination.arrive();
+            if (Program.currentGame.worldMap.locations[this.x, this.y] == null)
+              Program.currentGame.worldMap.locations[this.x, this.y] = Location.generateRandomLocation(Program.enemiesPerLocationMin, Program.enemiesPerLocationMax);
+            Program.currentGame.worldMap.locations[this.x, this.y].arrive();
             this.lastMove = direction;
             return true;
           }
@@ -73,11 +75,10 @@ namespace KillSomeMonsters.Creatures
         {
           if (this.x < Program.worldSizeX)
           {
-            Location destination = Program.currentGame.worldMap.locations[this.x - 1, this.y];
-            if (destination == null)
-              Program.currentGame.worldMap.locations[this.x, this.y] = Location.generateRandomLocation(Program.enemiesPerLocationMin, Program.enemiesPerLocationMax);
             this.x--;
-            destination.arrive();
+            if (Program.currentGame.worldMap.locations[this.x, this.y] == null)
+              Program.currentGame.worldMap.locations[this.x, this.y] = Location.generateRandomLocation(Program.enemiesPerLocationMin, Program.enemiesPerLocationMax);
+            Program.currentGame.worldMap.locations[this.x, this.y].arrive();
             this.lastMove = direction;
             return true;
           }
@@ -88,11 +89,10 @@ namespace KillSomeMonsters.Creatures
         {
           if (this.y > 0)
           {
-            Location destination = Program.currentGame.worldMap.locations[this.x, this.y - 1];
-            if (destination == null)
-              Program.currentGame.worldMap.locations[this.x, this.y] = Location.generateRandomLocation(Program.enemiesPerLocationMin, Program.enemiesPerLocationMax);
             this.y--;
-            destination.arrive();
+            if (Program.currentGame.worldMap.locations[this.x, this.y] == null)
+              Program.currentGame.worldMap.locations[this.x, this.y] = Location.generateRandomLocation(Program.enemiesPerLocationMin, Program.enemiesPerLocationMax);
+            Program.currentGame.worldMap.locations[this.x, this.y].arrive();
             this.lastMove = direction;
             return true;
           }

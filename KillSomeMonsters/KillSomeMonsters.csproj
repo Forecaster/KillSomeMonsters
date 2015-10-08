@@ -45,7 +45,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Creatures\EnemyNames.cs" />
+    <Compile Include="Creatures\CharacterNames.cs" />
+    <Compile Include="Creatures\Merchant.cs" />
     <Compile Include="Locations\Direction.cs" />
     <Compile Include="Locations\Location.cs" />
     <Compile Include="Locations\EnvNames.cs" />
@@ -53,14 +54,14 @@
     <Compile Include="Locations\Mountains.cs" />
     <Compile Include="Locations\Sewer.cs" />
     <Compile Include="Locations\Town.cs" />
-    <Compile Include="Equipment\Armor.cs" />
-    <Compile Include="Equipment\Equipment.cs" />
-    <Compile Include="Equipment\EquNames.cs" />
-    <Compile Include="Equipment\Head.cs" />
-    <Compile Include="Equipment\Potion.cs" />
-    <Compile Include="Equipment\Shield.cs" />
-    <Compile Include="Equipment\Weapon.cs" />
-    <Compile Include="Equipment\Body.cs" />
+    <Compile Include="Items\Armor.cs" />
+    <Compile Include="Items\Equipment.cs" />
+    <Compile Include="Items\EquNames.cs" />
+    <Compile Include="Items\Head.cs" />
+    <Compile Include="Items\Potion.cs" />
+    <Compile Include="Items\Shield.cs" />
+    <Compile Include="Items\Weapon.cs" />
+    <Compile Include="Items\Body.cs" />
     <Compile Include="Creatures\Enemy.cs" />
     <Compile Include="Creatures\Creature.cs" />
     <Compile Include="Creatures\Player.cs" />

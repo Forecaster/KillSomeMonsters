@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace KillSomeMonsters.Equipment
+namespace KillSomeMonsters.Items
 {
   public class Weapon : Equipment
   {
@@ -14,7 +14,9 @@ namespace KillSomeMonsters.Equipment
 
     public Weapon(string name, int damage) : this(name, damage, 10, 10, 5) { }
 
-    public Weapon(string name, int damage, int maxHealth, int health, int value)
+    public Weapon(string name, int damage, int maxHealth, int health, int value) : this(name, damage, maxHealth, health, value, false) { }
+
+    public Weapon(string name, int damage, int maxHealth, int health, int value, bool indestructible)
     {
       this.name = name;
       this.value = value;
@@ -22,6 +24,7 @@ namespace KillSomeMonsters.Equipment
       this.damage = damage;
       this.maxHealth = maxHealth;
       this.health = health;
+      this.indestructible = indestructible;
     }
   }
 }

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace KillSomeMonsters.Equipment
+namespace KillSomeMonsters.Items
 {
   public class Head : Armor
   {
@@ -12,7 +12,9 @@ namespace KillSomeMonsters.Equipment
 
     public Head(string name, int armorBonus) : this(name, armorBonus, 10, 10, 5) { }
 
-    public Head(string name, int armorBonus, int maxHealth, int health, int value)
+    public Head(string name, int armorBonus, int maxHealth, int health, int value) : this(name, armorBonus, maxHealth, health, value, false) { }
+
+    public Head(string name, int armorBonus, int maxHealth, int health, int value, bool indestructible)
     {
       this.name = name;
       this.value = value;
@@ -20,6 +22,7 @@ namespace KillSomeMonsters.Equipment
       this.armorBonus = armorBonus;
       this.maxHealth = maxHealth;
       this.health = health;
+      this.indestructible = indestructible;
     }
   }
 }

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace KillSomeMonsters.Equipment
+namespace KillSomeMonsters.Items
 {
   public class Armor : Equipment
   {

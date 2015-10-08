@@ -1,5 +1,5 @@
 ﻿using KillSomeMonsters.Locations;
-using KillSomeMonsters.Equipment;
+using KillSomeMonsters.Items;
 using KillSomeMonsters.StatEffects;
 using System;
 using System.Collections.Generic;
@@ -21,26 +21,22 @@ namespace KillSomeMonsters
     public static int enemiesPerLocationMax = 6;
     public static int maxPotionCarry = 3;
 
+    public static string cursor = " > ";
+
+    public static bool debugModeEnabled = false;
+
     public static int worldSizeX = 15;
     public static int worldSizeY = 15;
 
     static void Main(string[] args)
     {
-      //Town town = new Town("testVille");
-      //Player testPlayer = new Player("PlayerName", ref town);
-      //Potion potion = new Potion("Potion of Testing", Effect.HEAL, 1);
-      //Console.WriteLine(potion.getEffect());
-
-      //Console.WriteLine(testPlayer.health + "/" + testPlayer.maxHealth);
-      //int result = potion.drinkPotion(testPlayer);
-      //Console.WriteLine(testPlayer.health + "/" + testPlayer.maxHealth);
-      //Console.WriteLine(result.ToString());
-      //Console.ReadKey();
-
       Menu.mainMenu();
 
-      Console.WriteLine("Reached end of program");
-      Console.ReadKey();
+      if (debugModeEnabled)
+      {
+        Console.WriteLine("Reached end of program");
+        Console.ReadKey();
+      }
     }
   }
 }

@@ -32,12 +32,31 @@ namespace KillSomeMonsters
     public static int rollDice(int numberOfDice)
     {
       Random rand = new Random();
+      List<int> results = new List<int>();
       int sum = 0;
-      for (int i = 0; i < numberOfDice - 1; i++)
+      for (int i = 0; i < numberOfDice; i++)
+        results.Add(rand.Next(1, 6));
+
+      sum = results.Sum();
+
+      if (Program.debugModeEnabled)
       {
-        sum += rand.Next(1, 6);
+        for (int c = 0; c < results.Count - 1; c++)
+        {
+          Console.WriteLine("[Debug] Roll " + c + ": " + results[c]);
+        }
+        Console.WriteLine("[Debug] Rolled " + numberOfDice + " dice, sum: " + sum);
+        Console.WriteLine("========");
       }
       return sum;
+    }
+
+    public static bool invertBoolean(bool boolean)
+    {
+      if (boolean)
+        return false;
+      else
+        return true;
     }
   }
 }

@@ -7,16 +7,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace KillSomeMonsters.Equipment
+namespace KillSomeMonsters.Items
 {
-  public class Potion
+  public class Potion : Equipment
   {
-    string name;
-    string color;
-    string texture;
-    string bottle;
-    Effect effect;
-    int magnitude;
+    public string color;
+    public string texture;
+    public string bottle;
+    public Effect effect;
+    public int magnitude;
 
     public Potion(string name, Effect effect, int magnitude)
     {
@@ -26,6 +25,8 @@ namespace KillSomeMonsters.Equipment
       this.color = "color";
       this.texture = "texture";
       this.bottle = "bottle";
+      this.value = magnitude * 5;
+      this.indestructible = true;
     }
 
     public Potion(string name, string color, string texture, string bottle, int magnitude)
@@ -35,6 +36,8 @@ namespace KillSomeMonsters.Equipment
       this.texture = texture;
       this.bottle = bottle;
       this.magnitude = magnitude;
+      this.value = magnitude * 5;
+      this.indestructible = true;
     }
 
     public Potion(string name, string color, string texture, string bottle, Effect effect, int magnitude)
@@ -45,6 +48,8 @@ namespace KillSomeMonsters.Equipment
       this.bottle = bottle;
       this.effect = effect;
       this.magnitude = magnitude;
+      this.value = magnitude * 5;
+      this.indestructible = true;
     }
 
     public string getEffect()

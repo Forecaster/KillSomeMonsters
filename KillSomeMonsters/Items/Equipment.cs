@@ -5,27 +5,33 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace KillSomeMonsters.Equipment
+namespace KillSomeMonsters.Items
 {
-  public class Equipment
+  public abstract class Equipment
   {
     public string name;
     public int value; //item value in "gold"
     public int valueModifier; //value modifier per point of health lost (cost = health repaired * valueModifier)
     public int maxHealth;
     public int health;
+    public bool indestructible;
 
     /*
      * Damage equipment by amount
      */
     public bool takeDamage(int amount)
     {
-      if (this.health > 0)
+      if (!this.indestructible)
       {
-        int health = this.health - amount;
+        if (this.health > 0)
+        {
+          int health = this.health - amount;
 
-        this.health = Math.Max(health, 0);
-        return true;
+          this.health = Math.Max(health, 0);
+          return true;
+        }
+        else
+          return false;
       }
       else
         return false;
@@ -50,6 +56,21 @@ namespace KillSomeMonsters.Equipment
         return 0;
     }
 
+    public static Weapon getDefaultWeapon()
+    {
+      return new Weapon("Fists", 0, 0, 0, 0, true);
+    }
+
+    public static Body getDefaultBody()
+    {
+      return new Body("Plaid Shirt", 0, 0, 0, 0, true);
+    }
+
+    public static Head getDefaultHead()
+    {
+      return new Head("Hair", 0, 0, 0, 0, true);
+    }
+
     public static Weapon generateRandomWeapon(int level)
     {
       Random rand = new Random();
@@ -67,7 +88,7 @@ namespace KillSomeMonsters.Equipment
     {
       Random rand = new Random();
 
-      int nameId = rand.Next(0, EquNames.namesWeapon.Count - 1);
+      int nameId = rand.Next(0, EquNames.namesShield.Count - 1);
       int armor = Math.Max(rand.Next(level - 2, level), 1);
       int maxHealth = rand.Next(level * 3, level * 4);
       int health = Math.Max(rand.Next(maxHealth - 3, maxHealth), 5);
@@ -80,7 +101,7 @@ namespace KillSomeMonsters.Equipment
     {
       Random rand = new Random();
 
-      int nameId = rand.Next(0, EquNames.namesWeapon.Count - 1);
+      int nameId = rand.Next(0, EquNames.namesHead.Count - 1);
       int armor = Math.Max(rand.Next(level - 2, level), 1);
       int maxHealth = rand.Next(level * 3, level * 4);
       int health = Math.Max(rand.Next(maxHealth - 3, maxHealth), 5);
@@ -93,13 +114,13 @@ namespace KillSomeMonsters.Equipment
     {
       Random rand = new Random();
 
-      int nameId = rand.Next(0, EquNames.namesWeapon.Count - 1);
+      int nameId = rand.Next(0, EquNames.namesBody.Count - 1);
       int armor = Math.Max(rand.Next(level - 2, level), 1);
       int maxHealth = rand.Next(level * 3, level * 4);
       int health = Math.Max(rand.Next(maxHealth - 3, maxHealth), 5);
       int value = rand.Next(maxHealth + armor + 2, maxHealth + armor + 4);
 
-      return new Body(EquNames.namesShield[nameId], armor, maxHealth, health, value);
+      return new Body(EquNames.namesBody[nameId], armor, maxHealth, health, value);
     }
 
     public static Potion generateRandomPotion(int level)

@@ -12,7 +12,7 @@ namespace KillSomeMonsters.Locations
     public WorldMap()
     {
       this.locations = new Location[15, 15];
-      this.locations[8, 8] = new Town("Startville", true, 100, true, true);
+      this.locations[8, 8] = new Town("Startville", true, true, true);
     }
   }
 }
