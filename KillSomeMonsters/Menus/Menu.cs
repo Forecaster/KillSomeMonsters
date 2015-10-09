@@ -225,6 +225,7 @@ namespace KillSomeMonsters.Menus
           }
 
           Console.WriteLine("\n\n   Points to spend: " + pointsToSpend);
+          Console.WriteLine("\n   Levelling is not implemented. These are the only points you get for now.");
 
           string userKey = Console.ReadKey().Key.ToString();
 
