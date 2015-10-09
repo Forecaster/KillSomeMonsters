@@ -70,7 +70,9 @@ namespace KillSomeMonsters.Creatures
     public Tuple<int, int, string> getReducedDamageAgainstArmor(int initialDamage, int opponentDexterity)
     {
       List<string> hitLocations = new List<string>();
+      Utility.debugMsg("Determining opponent dexterity");
       opponentDexterity = Utility.rollDice(1 + opponentDexterity);
+      Utility.debugMsg("Determining my speed");
       int speed = Utility.rollDice(1 + this.speed);
       hitLocations.Add("Head");
       hitLocations.Add("Body");
@@ -81,7 +83,7 @@ namespace KillSomeMonsters.Creatures
 
       Random rand = new Random();
       int hitChancePenalty;
-      if (opponentDexterity > Utility.rollDice(1 + speed)) //If opponent dexterity is greater than my speed opponent gets no penalty to hit
+      if (opponentDexterity > speed) //If opponent dexterity is greater than my speed opponent gets no penalty to hit
         hitChancePenalty = 0;
       else
         hitChancePenalty = speed - opponentDexterity; //If opponent dexterity is less than my speed the difference is used as the penalty to hit

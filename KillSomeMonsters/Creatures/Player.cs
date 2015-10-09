@@ -21,7 +21,7 @@ namespace KillSomeMonsters.Creatures
     public Player(string name, int fortitude, int strength, int speed, int dexterity)
     {
       this.name = name;
-      this.maxHealth = Math.Max((fortitude * 5), 5);
+      this.maxHealth = (1 + fortitude) * 5;
       this.health = this.maxHealth;
       this.fortitude = fortitude;
       this.strength = strength;

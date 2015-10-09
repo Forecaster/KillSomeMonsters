@@ -34,19 +34,20 @@ namespace KillSomeMonsters
       Random rand = new Random();
       List<int> results = new List<int>();
       int sum = 0;
-      for (int i = 0; i < numberOfDice; i++)
+      for (int i = 0; i <= numberOfDice; i++)
         results.Add(rand.Next(1, 6));
 
       sum = results.Sum();
 
       if (Program.debugModeEnabled)
       {
+        debugMsg("Rolling " + numberOfDice + ":");
         for (int c = 0; c < results.Count - 1; c++)
         {
-          Console.WriteLine("[Debug] Roll " + c + ": " + results[c]);
+          debugMsg("Roll #" + c + ": " + results[c]);
         }
-        Console.WriteLine("[Debug] Rolled " + numberOfDice + " dice, sum: " + sum);
-        Console.WriteLine("========");
+        debugMsg("Total: " + sum);
+        debugMsg("========");
       }
       return sum;
     }
@@ -57,6 +58,12 @@ namespace KillSomeMonsters
         return false;
       else
         return true;
+    }
+
+    public static void debugMsg(string msg)
+    {
+      if (Program.debugModeEnabled)
+        Console.WriteLine("[Debug] " + msg);
     }
   }
 }

@@ -340,9 +340,9 @@ namespace KillSomeMonsters.Menus
 
         if (Program.debugModeEnabled)
         {
-          Console.WriteLine("[Debug] Enemies left: " + location.enemies.Count);
+          Utility.debugMsg("Enemies left: " + location.enemies.Count);
           Console.WriteLine();
-          options.Add("[Debug] Heal");
+          options.Add("Heal (Debug)");
         }
         
         if (locationGenericName == "town")
@@ -413,7 +413,7 @@ namespace KillSomeMonsters.Menus
 
         if (playerKey == "Enter")
         {
-          if (options[currentSelection] == "[Debug] Heal")
+          if (options[currentSelection] == "Heal (Debug)")
           {
             game.player.health = game.player.maxHealth;
           }
@@ -617,13 +617,15 @@ namespace KillSomeMonsters.Menus
         {
           if (options[currentSelection] == "Attack")
           {
-            Tuple<int, int, string> result = opponent.getReducedDamageAgainstArmor(Utility.rollDice(player.strength) + player.getWeaponDamage(), player.dexterity);
+            player.shielding = false;
+            Tuple<int, int, string> result = opponent.getReducedDamageAgainstArmor(Utility.rollDice(1 + player.strength) + player.getWeaponDamage(), player.dexterity);
             if (result.Item3 != "Miss")
             {
               Console.WriteLine("You swing your " + player.weapon.name + " at the creature and strike it's " + result.Item3 + " and do " + result.Item1 + " damage!");
               if (result.Item2 > 0)
                 Console.WriteLine("It's armor absorbed " + result.Item2 + " damage.");
-              opponent.applyDamage(result.Item1);
+              Console.WriteLine("You do " + (result.Item1 - result.Item2) + " points of damage.");
+              opponent.applyDamage(result.Item1 - result.Item2);
             }
             else
               Console.WriteLine("You swing your " + player.weapon.name + " at the creature but miss and tumble past it!");
@@ -631,19 +633,49 @@ namespace KillSomeMonsters.Menus
 
             Console.WriteLine("...");
             Console.ReadKey();
+          }
+          else if (options[currentSelection] == "Defend")
+          {
+            player.shielding = true;
+            Console.WriteLine("You raise your " + player.shield.name + " in front of you, hoping that your opponent will hit it instead of your face.");
+            Console.WriteLine("...");
+            Console.ReadKey();
+          }
+          else if (options[currentSelection] == "Run away")
+          {
+            int mySpeed = Utility.rollDice(1 + player.speed);
+            int opponentSpeed = Utility.rollDice(1 + opponent.speed);
 
-            if (opponent.health == 0)
+            if (mySpeed > opponentSpeed)
             {
-              player.gold += opponent.gold;
-              return "opponentDefeat";
+              Console.WriteLine("You decide you're in trouble and start sprinting away from the " + opponent.name + " and keep going until you can no longer hear it behind you.");
+              Console.WriteLine("...");
+              Console.ReadKey();
+              return "playerEscape";
             }
             else
-              if (((Enemy)opponent).enemyTurn(player) == "escapeSuccess")
-                return "opponentEscape";
+            {
+              Console.WriteLine("You decide the " + opponent.name + " is too much to handle and attempt a daring escape, dashing right past it you try to outrun it.");
+              Console.WriteLine("You quickly realize it's faster than you and stop and turn to face it once more.");
+              Console.WriteLine("It takes the opportunity to attack while you are turning around!");
+              Console.WriteLine("...");
+              Console.ReadKey();
+            }
 
-            if (player.health == 0)
-              return "playerDefeat";
           }
+
+          if (opponent.health == 0)
+          {
+            player.gold += opponent.gold;
+            Console.WriteLine("You find " + opponent.gold + " gold coins on the remains!");
+            return "opponentDefeat";
+          }
+          else
+            if (((Enemy)opponent).enemyTurn(player) == "escapeSuccess")
+              return "opponentEscape";
+
+          if (player.health == 0)
+            return "playerDefeat";
         }
         else if (playerKey.Key.ToString() == "UpArrow")
         {

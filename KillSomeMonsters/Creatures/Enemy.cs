@@ -50,6 +50,7 @@ namespace KillSomeMonsters.Creatures
 
       if (actions[chosenAction] == "Attack")
       {
+        this.shielding = false;
         Console.WriteLine("The creature lunges at you with a " + this.weapon.name);
         int dexterity = Utility.rollDice(this.dexterity);
         int opponentSpeed = Utility.rollDice(opponent.speed);
@@ -60,7 +61,8 @@ namespace KillSomeMonsters.Creatures
           Console.WriteLine("The weapon strikes your " + result.Item3 + " and does " + result.Item1 + " points of damage to you!");
           if (result.Item2 > 0)
             Console.WriteLine("Your armor absorbed " + result.Item2 + " damage.");
-          opponent.applyDamage(result.Item1);
+          Console.WriteLine("You take " + (result.Item1 - result.Item2) + " points of damage.");
+          opponent.applyDamage(result.Item1 - result.Item2);
           returnThis = "damageHit";
         }
         else
@@ -77,8 +79,8 @@ namespace KillSomeMonsters.Creatures
       }
       else if (actions[chosenAction] == "Run Away")
       {
-        int speed = Utility.rollDice(this.speed);
-        int opponentSpeed = Utility.rollDice(opponent.speed);
+        int speed = Utility.rollDice(1 + this.speed);
+        int opponentSpeed = Utility.rollDice(1 + opponent.speed);
 
         if (speed > opponentSpeed)
         {
