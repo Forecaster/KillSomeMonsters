@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace KillSomeMonsters.Exceptions
 {
-  public class FullHealthException : Exception
+  public class EffectException : Exception
   {
-    public FullHealthException(string message) : base(message) { }
+    public EffectException(string message) : base(message) { }
   }
 }
