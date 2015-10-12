@@ -15,40 +15,36 @@ namespace KillSomeMonsters.Items
     public string texture;
     public string bottle;
     public Effect effect;
-    public int magnitude;
 
-    public Potion(string name, Effect effect, int magnitude)
+    public Potion(string name, Effect effect)
     {
       this.name = name;
       this.effect = effect;
-      this.magnitude = magnitude;
       this.color = "color";
       this.texture = "texture";
       this.bottle = "bottle";
-      this.value = magnitude * 5;
+      this.value = effect.magnitude * 5;
       this.indestructible = true;
     }
 
-    public Potion(string name, string color, string texture, string bottle, int magnitude)
+    public Potion(string name, string color, string texture, string bottle)
     {
       this.name = name;
       this.color = color;
       this.texture = texture;
       this.bottle = bottle;
-      this.magnitude = magnitude;
-      this.value = magnitude * 5;
+      this.value = effect.magnitude * 5;
       this.indestructible = true;
     }
 
-    public Potion(string name, string color, string texture, string bottle, Effect effect, int magnitude)
+    public Potion(string name, string color, string texture, string bottle, Effect effect)
     {
       this.name = name;
       this.color = color;
       this.texture = texture;
       this.bottle = bottle;
       this.effect = effect;
-      this.magnitude = magnitude;
-      this.value = magnitude * 5;
+      this.value = effect.magnitude * 5;
       this.indestructible = true;
     }
 
@@ -62,7 +58,7 @@ namespace KillSomeMonsters.Items
       int result = 0;
       try
       {
-        result = this.effect.activate(drinker, this.magnitude);
+        result = this.effect.activate(drinker);
         return result;
       }
       catch (EffectException e)
@@ -77,7 +73,7 @@ namespace KillSomeMonsters.Items
       int result = 0;
       try
       {
-        result = this.effect.activate(target, this.magnitude);
+        result = this.effect.activate(target);
         return result;
       }
       catch (EffectException e)

@@ -9,16 +9,15 @@ namespace KillSomeMonsters.StatEffects
 {
   public abstract class Effect
   {
-    public static Heal HEAL;
-    public static Damage DAMAGE;
+    public int duration;
+    public int magnitude;
 
     static Effect()
     {
-      HEAL = new Heal();
-      DAMAGE = new Damage();
+      //constructor
     }
 
-    public virtual int activate(Creature target, int amount)
+    public virtual int activate(Creature target)
     {
       //dummy method that should never be called
       return -5;

@@ -9,7 +9,7 @@ namespace KillSomeMonsters
 {
   public static class Utility
   {
-    public static Effect getRandomEffect()
+    public static Effect getRandomEffect(int magnitude, int duration)
     {
       Random rand = new Random();
 
@@ -18,11 +18,11 @@ namespace KillSomeMonsters
       switch (number)
       {
         case 0:
-          return Effect.HEAL;
+          return new Heal(magnitude, duration);
         case 1:
-          return Effect.DAMAGE;
+          return new Damage(magnitude, duration);
         default:
-          return Effect.HEAL;
+          return new Heal(magnitude, duration);
       }
     }
 

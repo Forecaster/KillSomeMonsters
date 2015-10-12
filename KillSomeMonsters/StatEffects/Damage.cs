@@ -12,21 +12,29 @@ namespace KillSomeMonsters.StatEffects
    */
   public class Damage : Effect
   {
-    public Damage()
+    public Damage(int magnitude) : this(magnitude, 0) { }
+
+    public Damage(int magnitude, int duration)
     {
-      //constructor
+      this.magnitude = magnitude;
+      this.duration = duration;
     }
     
-    public override int activate(Creature target, int amount)
+    public override int activate(Creature target)
     {
+      if (this.duration > 0)
+        this.duration--;
+
       if (target.health != 0)
       {
-        int health = target.health - amount;
+        int initialHealth = target.health;
+        int health = initialHealth - this.magnitude;
         target.health = Math.Max(health, 0);
-        return -1;
+        int diff = initialHealth - health;
+        return diff;
       }
       else
-        return -1;
+        return 0;
     }
   }
 }

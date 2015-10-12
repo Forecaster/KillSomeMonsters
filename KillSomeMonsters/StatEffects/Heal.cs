@@ -10,23 +10,29 @@ namespace KillSomeMonsters.StatEffects
 {
   public class Heal : Effect
   {
-    public Heal()
+    public Heal(int magnitude) : this(magnitude, 0) { }
+
+    public Heal(int magnitude, int duration)
     {
-      //constructor
+      this.magnitude = magnitude;
+      this.duration = duration;
     }
 
-    public override int activate(Creature target, int amount)
+    public override int activate(Creature target)
     {
+      if (this.duration > 0)
+        this.duration--;
+
       if (target.health < target.maxHealth)
       {
-        int diff = Math.Min((target.maxHealth - target.health), amount);
-        int health = target.health + amount;
+        int initialHealth = target.health;
+        target.health = Math.Min((initialHealth + magnitude), target.maxHealth);
+        int diff = target.health - initialHealth;
 
-        target.health = Math.Min(health, target.maxHealth);
         return diff;
       }
       else
-        throw new FullHealthException("Target has full health already!");
+        throw new EffectException("Target has full health already!");
     }
   }
 }

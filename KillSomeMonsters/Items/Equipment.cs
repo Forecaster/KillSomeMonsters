@@ -130,14 +130,14 @@ namespace KillSomeMonsters.Items
 
       int magnitude = Math.Max(rand.Next(level - 1, level + 1), 1);
 
-      Effect effect = Utility.getRandomEffect();
+      Effect effect = Utility.getRandomEffect(magnitude, 0);
 
-      if (effect == Effect.HEAL)
+      if (effect is Heal)
         name = EquNames.namesPotionHeal[rand.Next(0, EquNames.namesPotionHeal.Count - 1)];
-      else if (effect == Effect.DAMAGE)
+      else if (effect is Damage)
         name = EquNames.namesPotionDamage[rand.Next(0, EquNames.namesPotionHeal.Count - 1)];
 
-      return new Potion(name, effect, magnitude);
+      return new Potion(name, effect);
     }
   }
 }

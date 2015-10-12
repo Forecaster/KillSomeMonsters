@@ -314,7 +314,7 @@ namespace KillSomeMonsters.Menus
         }
       }
       Player player = new Player(characterName, fortitude, strength, speed, dexterity);
-      player.potions.Add(new Potion("Healing Potion", Effect.HEAL, 2));
+      player.potions.Add(Equipment.generateRandomPotion(player.level));
       Program.currentGame = new Game(player);
       Program.gameInProgress = true;
       gameMenu(ref Program.currentGame);
@@ -843,7 +843,7 @@ namespace KillSomeMonsters.Menus
                     wareAttribute = ((Armor)wares[f]).armorBonus.ToString();
                     break;
                   case "potion":
-                    wareAttribute = ((Potion)wares[f]).magnitude.ToString();
+                    wareAttribute = ((Potion)wares[f]).effect.magnitude.ToString();
                     break;
                 }
                 int wareValue = wares[f].value;
@@ -939,7 +939,7 @@ namespace KillSomeMonsters.Menus
             prefix = Program.cursor;
 
           if (options[i] == "potion")
-            Console.WriteLine(prefix + potions[i].name + " +" + potions[i].magnitude);
+            Console.WriteLine(prefix + potions[i].name + " +" + potions[i].effect.magnitude);
           else if (options[i] == "exit")
             Console.WriteLine(prefix + "Exit");
         }

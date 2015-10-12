@@ -1,4 +1,5 @@
 ﻿using KillSomeMonsters.Items;
+using KillSomeMonsters.StatEffects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -34,6 +35,31 @@ namespace KillSomeMonsters.Creatures
 
     //misc
     public int gold;
+    public List<Effect> activeEffects = new List<Effect>();
+    public List<Effect> expiredEffects = new List<Effect>();
+
+    public void tick()
+    {
+      if (this.activeEffects.Count > 0)
+      {
+        foreach (Effect effect in activeEffects)
+        {
+          int result = effect.activate(this);
+          if (effect.duration == 0)
+          {
+            expiredEffects.Add(effect);
+            activeEffects.Remove(effect);
+          }
+          if (this is Player)
+          {
+            if (result > 0)
+              Console.WriteLine("You recover " + result + " health thanks to a lingering effect");
+            else if (result < 0)
+              Console.WriteLine("You feel a sting from a lingering effect. You loose " + (result * -1) + " health");
+          }
+        }
+      }
+    }
 
     public string getGeneralHealth()
     {
