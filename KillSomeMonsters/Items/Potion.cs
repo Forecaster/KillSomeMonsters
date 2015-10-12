@@ -65,7 +65,7 @@ namespace KillSomeMonsters.Items
         result = this.effect.activate(drinker, this.magnitude);
         return result;
       }
-      catch (FullHealthException e)
+      catch (EffectException e)
       {
         return result;
       }
@@ -80,7 +80,7 @@ namespace KillSomeMonsters.Items
         result = this.effect.activate(target, this.magnitude);
         return result;
       }
-      catch (FullHealthException e)
+      catch (EffectException e)
       {
         return result;
       }
