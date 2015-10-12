@@ -134,6 +134,9 @@ namespace KillSomeMonsters.Menus
             Console.WriteLine(prefix + options[i]);
         }
 
+        if (Program.debugModeEnabled)
+          Console.WriteLine("\nDebug mode will display addional (sometimes spammy) data and some cheat options. It will also keep you from dying in combat.");
+
         string userKey = Console.ReadKey(true).Key.ToString();
 
         if (userKey == "Enter")
