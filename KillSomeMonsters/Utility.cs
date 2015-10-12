@@ -27,7 +27,7 @@ namespace KillSomeMonsters
     }
 
     /*
-     * Used to roll dice for tests using attributes. The attribute being tested should be used as the number of dice
+     * Used to roll dice for tests using attributes. An attribute should be performed as rollDice(1 + attribute) = result
      */
     public static int rollDice(int numberOfDice)
     {
@@ -52,6 +52,9 @@ namespace KillSomeMonsters
       return sum;
     }
 
+    /*
+     * Takes the input boolean and returns the inverse
+     */
     public static bool invertBoolean(bool boolean)
     {
       if (boolean)
@@ -60,6 +63,9 @@ namespace KillSomeMonsters
         return true;
     }
 
+    /*
+     * Prints a message to console with the [Debug] prefix
+     */
     public static void debugMsg(string msg)
     {
       if (Program.debugModeEnabled)

@@ -56,6 +56,9 @@ namespace KillSomeMonsters.Items
         return 0;
     }
 
+    /*
+     * The following 3 methods generate starting equipment (for the player)
+     */
     public static Weapon getDefaultWeapon()
     {
       return new Weapon("Fists", 0, 0, 0, 0, true);

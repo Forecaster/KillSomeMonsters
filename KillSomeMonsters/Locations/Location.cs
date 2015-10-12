@@ -49,6 +49,9 @@ namespace KillSomeMonsters.Locations
       this.visited = true;
     }
 
+    /*
+     * For describing whether a location has monsters and/or have been visited in an immersive manner
+     */
     public string inspectLocation()
     {
       string visited = "an unfamiliar";

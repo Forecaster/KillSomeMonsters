@@ -928,6 +928,10 @@ namespace KillSomeMonsters.Menus
       }
     }
 
+    /*
+     * Used to choose a potion to throw or drink
+     * action should be "throw" or "drink"
+     */
     public static int potionMenu(List<Potion> potions, string action)
     {
       bool exitThisMenu = false;

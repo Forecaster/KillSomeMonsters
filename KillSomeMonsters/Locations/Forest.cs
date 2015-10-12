@@ -16,9 +16,9 @@ namespace KillSomeMonsters.Locations
       this.genericName = "forest";
       this.genericPlural = "forests";
       this.genericDescription = new List<string>();
-      this.genericDescription.Add("A forest by the name of {0} surrounds you and you hear birds chirping in the trees above.");
-      this.genericDescription.Add("A beatiful forest spreads out before you, beams of sunlight piercing through the canopy of leaves above. You heard it's called {0} in the previous town.");
-      this.genericDescription.Add("Supposedly a forest, {0} appears to be more of a plain with a few trees here and there.");
+      this.genericDescription.Add("{0} surrounds you and you hear birds chirping in the trees above.");
+      this.genericDescription.Add("{0} spreads out before you, beams of sunlight piercing through the canopy of leaves above.");
+      this.genericDescription.Add("{0} appears to be more of a plain with a few trees here and there.");
 
       int enemies = rand.Next(minEnemies, maxEnemies);
 

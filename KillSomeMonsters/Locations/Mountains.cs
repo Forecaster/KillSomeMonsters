@@ -16,7 +16,7 @@ namespace KillSomeMonsters.Locations
       this.genericName = "mountain";
       this.genericPlural = "mountains";
       this.genericDescription = new List<string>();
-      this.genericDescription.Add("A rocky area by the name of {0} blocks your path.\nYou can see a winding path vanish into the distance");
+      this.genericDescription.Add("{0} blocks your path.\nYou can see a winding path vanish into the distance");
 
       int enemies = rand.Next(minEnemies, maxEnemies);
 

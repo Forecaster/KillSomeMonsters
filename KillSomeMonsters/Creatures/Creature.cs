@@ -38,6 +38,9 @@ namespace KillSomeMonsters.Creatures
     public List<Effect> activeEffects = new List<Effect>();
     public List<Effect> expiredEffects = new List<Effect>();
 
+    /*
+     * Progresses active effects on character and cleans up expired effects
+     */      
     public void tick()
     {
       if (this.activeEffects.Count > 0)
@@ -61,6 +64,9 @@ namespace KillSomeMonsters.Creatures
       }
     }
 
+    /*
+     * Returns a general statement about the characters health, for indicating opponent health to player in combat without displaying percentages or exact numbers.
+     */
     public string getGeneralHealth()
     {
       double healthPercentage = (this.health / this.maxHealth) * 100;

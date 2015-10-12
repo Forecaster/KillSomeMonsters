@@ -16,19 +16,19 @@ namespace KillSomeMonsters.Locations
     static EnvNames()
     {
       namesForest.Add("Dark Woods");
-      namesForest.Add("Mystical Forest");
-      namesForest.Add("Ancient Glade");
-      namesForest.Add("Forest of Winds");
+      namesForest.Add("A Mystical Forest");
+      namesForest.Add("An Ancient Glade");
+      namesForest.Add("A Forest of Winds");
       namesForest.Add("Silent Woods");
-      namesForest.Add("Secluded Forest");
-      namesForest.Add("Lost Woods");
-      namesForest.Add("Forest of Tall Trees");
+      namesForest.Add("A Secluded Forest");
+      namesForest.Add("A Deep Forest");
+      namesForest.Add("A Forest of Tall Trees");
 
-      namesMountains.Add("Windy Pass");
-      namesMountains.Add("The Wispering Pass");
-      namesMountains.Add("Mount Sorry");
-      namesMountains.Add("Silent Pass");
-      namesMountains.Add("Mount Doom");
+      namesMountains.Add("A Windy Pass");
+      namesMountains.Add("A Deep Crevice");
+      namesMountains.Add("A Tall Mountain");
+      namesMountains.Add("A Narrow Pass");
+      namesMountains.Add("A Volcano");
 
       namesTown.Add("Windy Creek");
       namesTown.Add("Cake Town");
