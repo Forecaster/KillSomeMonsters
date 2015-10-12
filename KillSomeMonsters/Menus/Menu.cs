@@ -1,6 +1,7 @@
 ﻿using KillSomeMonsters.Creatures;
 using KillSomeMonsters.Items;
 using KillSomeMonsters.Locations;
+using KillSomeMonsters.StatEffects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -313,6 +314,7 @@ namespace KillSomeMonsters.Menus
         }
       }
       Player player = new Player(characterName, fortitude, strength, speed, dexterity);
+      player.potions.Add(new Potion("Healing Potion", Effect.HEAL, 2));
       Program.currentGame = new Game(player);
       Program.gameInProgress = true;
       gameMenu(ref Program.currentGame);
@@ -584,7 +586,7 @@ namespace KillSomeMonsters.Menus
 
         options.Add("Attack");
         options.Add("Defend");
-        if (player.potion.Count > 0)
+        if (player.potions.Count > 0)
         {
           options.Add("Throw Potion");
           options.Add("Drink Potion");
@@ -612,9 +614,9 @@ namespace KillSomeMonsters.Menus
           Console.WriteLine(prefix + options[i]);
         }
 
-        ConsoleKeyInfo playerKey = Console.ReadKey();
+        string userKey = Console.ReadKey().Key.ToString();
 
-        if (playerKey.Key.ToString() == "Enter")
+        if (userKey == "Enter")
         {
           if (options[currentSelection] == "Attack")
           {
@@ -664,6 +666,48 @@ namespace KillSomeMonsters.Menus
             }
 
           }
+          else if (options[currentSelection] == "Throw Potion")
+          {
+            int effect = 0;
+            int potion = potionMenu(player.potions, "thow");
+            if (potion >= 0)
+            {
+              effect = player.potions[potion].throwPotion(opponent);
+              player.potions.RemoveAt(potion);
+              if (effect != 0)
+              {
+                if (effect < 0)
+                  Console.WriteLine("The bottle smashes against the " + opponent.name + " and a small magical explosion occurs causing " + effect + " damage!");
+                else
+                  Console.WriteLine("The bottle smashes against the " + opponent.name + " and some of it's wounds seem to heal...");
+              }
+              else
+                Console.WriteLine("The bottle smashes against the " + opponent.name + " but nothing appears to happen...");
+              Console.WriteLine("...");
+              Console.ReadKey();
+            }
+          }
+          else if (options[currentSelection] == "Drink Potion")
+          {
+            int effect = 0;
+            int potion = potionMenu(player.potions, "drink");
+            if (potion >= 0)
+            {
+              effect = player.potions[potion].drinkPotion(player);
+              player.potions.RemoveAt(potion);
+              if (effect != 0)
+              {
+                if (effect < 0)
+                  Console.WriteLine("You chug the contents of the bottle and feel a sudden sharp pain in your stomach. You take " + effect + " damage!");
+                else
+                  Console.WriteLine("You chug the contents of the bottle and some of your wounds seem to heal.");
+              }
+              else
+                Console.WriteLine("You drink the contents of the bottle, but nothing seems to happen...");
+              Console.WriteLine("...");
+              Console.ReadKey();
+            }
+          }
 
           if (opponent.health == 0)
           {
@@ -678,13 +722,13 @@ namespace KillSomeMonsters.Menus
           if (player.health == 0)
             return "playerDefeat";
         }
-        else if (playerKey.Key.ToString() == "UpArrow")
+        else if (userKey == "UpArrow")
         {
           currentSelection--;
           if (currentSelection < 0)
             currentSelection = options.Count;
         }
-        else if (playerKey.Key.ToString() == "DownArrow")
+        else if (userKey == "DownArrow")
         {
           currentSelection++;
           if (currentSelection >= options.Count)
@@ -824,8 +868,8 @@ namespace KillSomeMonsters.Menus
                   else if (choice == "shield")
                     Program.currentGame.player.shield = merchant.purchaseShield(currentSelection);
                   else if (choice == "potion")
-                    if (Program.currentGame.player.potion.Count < Program.maxPotionCarry)
-                      Program.currentGame.player.potion.Add(merchant.purchasePotion(currentSelection));
+                    if (Program.currentGame.player.potions.Count < Program.maxPotionCarry)
+                      Program.currentGame.player.potions.Add(merchant.purchasePotion(currentSelection));
                   Console.WriteLine("You bought a " + wares[currentSelection].name + "!");
                   Console.WriteLine("...");
                   Console.ReadKey();
@@ -870,6 +914,59 @@ namespace KillSomeMonsters.Menus
             currentSelection = options.Count - 1;
         }
       }
+    }
+
+    public static int potionMenu(List<Potion> potions, string action)
+    {
+      bool exitThisMenu = false;
+      int currentSelection = 0;
+      List<string> options = new List<string>();
+
+      foreach (Potion potion in potions)
+        options.Add("potion");
+
+      options.Add("exit");
+
+      while (!exitThisMenu)
+      {
+        Console.Clear();
+        drawPlayerStatus(Program.currentGame.player);
+        Console.WriteLine("\nChose a potion to " + action + ":\n");
+        for (int i = 0; i < options.Count; i++)
+        {
+          string prefix = "   ";
+          if (currentSelection == i)
+            prefix = Program.cursor;
+
+          if (options[i] == "potion")
+            Console.WriteLine(prefix + potions[i].name + " +" + potions[i].magnitude);
+          else if (options[i] == "exit")
+            Console.WriteLine(prefix + "Exit");
+        }
+
+        string userKey = Console.ReadKey().Key.ToString();
+
+        if (userKey == "Enter")
+        {
+          if (options[currentSelection] == "potion")
+            return currentSelection;
+          else
+            return -1;
+        }
+        else if (userKey == "UpArrow")
+        {
+          currentSelection--;
+          if (currentSelection < 0)
+            currentSelection = options.Count;
+        }
+        else if (userKey == "DownArrow")
+        {
+          currentSelection++;
+          if (currentSelection >= options.Count)
+            currentSelection = 0;
+        }
+      }
+      return currentSelection;
     }
   }
 }

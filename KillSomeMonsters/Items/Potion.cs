@@ -72,9 +72,18 @@ namespace KillSomeMonsters.Items
 
     }
 
-    public bool throwPotion(Creature target)
+    public int throwPotion(Creature target)
     {
-      return false;
+      int result = 0;
+      try
+      {
+        result = this.effect.activate(target, this.magnitude);
+        return result;
+      }
+      catch (FullHealthException e)
+      {
+        return result;
+      }
     }
   }
 }

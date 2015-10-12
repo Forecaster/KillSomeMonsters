@@ -30,7 +30,7 @@ namespace KillSomeMonsters.Creatures
     public Body armor;
     public Shield shield;
     public Weapon weapon;
-    public List<Potion> potion = new List<Potion>();
+    public List<Potion> potions = new List<Potion>();
 
     //misc
     public int gold;
