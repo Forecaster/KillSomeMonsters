@@ -65,7 +65,7 @@
     <Compile Include="Creatures\Enemy.cs" />
     <Compile Include="Creatures\Creature.cs" />
     <Compile Include="Creatures\Player.cs" />
-    <Compile Include="Exceptions\FullHealthException.cs" />
+    <Compile Include="Exceptions\EffectException.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="Locations\WorldMap.cs" />
     <Compile Include="Menus\Menu.cs" />

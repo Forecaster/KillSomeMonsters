@@ -582,6 +582,7 @@ namespace KillSomeMonsters.Menus
       {
         List<string> options = new List<string>();
         Console.Clear();
+        player.tick();
         Menu.drawPlayerStatus(player);
 
         options.Add("Attack");
@@ -718,6 +719,14 @@ namespace KillSomeMonsters.Menus
           else
             if (((Enemy)opponent).enemyTurn(player) == "escapeSuccess")
               return "opponentEscape";
+
+          if (Program.debugModeEnabled && player.health == 0)
+          {
+            player.health = 1;
+            Utility.debugMsg("Kept you from dying a horrible death.");
+            Console.WriteLine("...");
+            Console.ReadKey();
+          }
 
           if (player.health == 0)
             return "playerDefeat";

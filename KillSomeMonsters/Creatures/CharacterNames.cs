@@ -26,6 +26,8 @@ namespace KillSomeMonsters.Creatures
       namesEnemies.Add("Cloud of Anger");
       namesEnemies.Add("Puddle of Mutagen");
       namesEnemies.Add("Jar of Marmite");
+      namesEnemies.Add("Old Lady");
+      namesEnemies.Add("Goose");
 
       namesMerhcants.Add("Honest Herbert");
       namesMerhcants.Add("Finnicky Finn");
